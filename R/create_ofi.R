@@ -15,6 +15,7 @@
 #' @param data A data.frame. The data needed to create the
 #'     opportunities for improvements variable. Has to include the
 #'     columns VK_avslutad, Problemomrade_.FMP, and Fr1-14. No default.
+#' @export
 create_ofi <- function(data) {
     ## Check arguments
     assertthat::assert_that(is.data.frame(data))

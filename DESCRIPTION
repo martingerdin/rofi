@@ -3,7 +3,7 @@ Title: Utility Functions for the Opportunities For Improvement Project
 Version: 0.0.0.9000
 Authors@R: 
     person("Martin", "Gerdin Wärnberg", , "martingerdin@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "0000-0001-6069-4794"))
 Description: This package contains utility functions for working with the opportunities for improvement project.
 License: `use_gpl3_license()`
 Encoding: UTF-8

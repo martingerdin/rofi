@@ -12,4 +12,6 @@ RoxygenNote: 7.1.1
 Imports: 
     DBI,
     RMariaDB,
-    keyring
+    keyring,
+    assertthat,
+    dotenv

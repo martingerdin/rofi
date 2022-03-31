@@ -30,11 +30,11 @@ create_ofi <- function(data) {
                                             "föredömligt handlagd", "logistik/teknik",
                                             "dokumentation", "dokumetation", "bristande rutin", 
                                             "handläggning", "kompetens brist", "tertiär survey")
-    if (!identical(levels.Problemomrade_.FMP, original.levels.Problemomrade_.FMP))
+    if (!all(levels.Problemomrade_.FMP %in% original.levels.Problemomrade_.FMP))
         stop ("Levels in Problemomrade._FMP have changed.")
     levels.Fr1.14 <- unique(data$`Fr1-14`)
     original.levels.Fr1.14 <- c(NA, "1", "3", "2", "999")
-    if (!identical(levels.Fr1.14, original.levels.Fr1.14))
+    if (!all(levels.Fr1.14 %in% original.levels.Fr1.14))
         stop ("Levels in Fr1-14 have changed.")
     prob.filters <- with(data, `Problemomrade_.FMP` != "ok" & `Problemomrade_.FMP` != "föredömligt handlagd")
     prob.mortality <- with(data, `Fr1-14` == "2" | `Fr1-14` == "3")
@@ -42,7 +42,7 @@ create_ofi <- function(data) {
     data$VK_avslutad <- tolower(data$VK_avslutad)
     levels.VK_avslutad <- unique(data$VK_avslutad)
     original.levels.VK_avslutad <- c("ja", NA, "nej")
-    if (!identical(levels.VK_avslutad, original.levels.VK_avslutad))
+    if (!all(levels.VK_avslutad %in% original.levels.VK_avslutad))
         stop ("Levels in VK_avslutad have changed.")
     quality.process.done <- data$VK_avslutad == "ja"
     ofi <- ifelse(prob, "Yes",

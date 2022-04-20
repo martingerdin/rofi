@@ -44,6 +44,7 @@ create_ofi <- function(data) {
     ### Här är nytt - Ej 100%. Behöver komplement att de med preventable death = 999 = OFI = NA
     ##################### 
     data[,"VK_avslutad"][data[,"VK_avslutad"] == "ja"|
+                             data[,"Fr1.14"] != 999|
                              data[,"tra_DodsfallsanalysGenomford"] == 1] <- "ja"
     
     data[,"VK_avslutad"][data[,"VK_avslutad"] == "nej"|

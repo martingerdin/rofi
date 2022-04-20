@@ -40,6 +40,15 @@ create_ofi <- function(data) {
     prob.mortality <- with(data, `Fr1-14` == "2" | `Fr1-14` == "3")
     prob <- prob.filters | prob.mortality
     data$VK_avslutad <- tolower(data$VK_avslutad)
+    ######################  
+    ### Här är nytt - Ej 100%. Behöver komplement att de med preventable death = 999 = OFI = NA
+    ##################### 
+    data[,"VK_avslutad"][data[,"VK_avslutad"] == "ja"|
+                             data[,"tra_DodsfallsanalysGenomford"] == 1] <- "ja"
+    
+    data[,"VK_avslutad"][data[,"VK_avslutad"] == "nej"|
+                             data[,"tra_DodsfallsanalysGenomford"] == 2] <- "nej"
+    #####################  
     levels.VK_avslutad <- unique(data$VK_avslutad)
     original.levels.VK_avslutad <- c("ja", NA, "nej")
     if (!all(levels.VK_avslutad %in% original.levels.VK_avslutad))

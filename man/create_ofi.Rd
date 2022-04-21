@@ -9,19 +9,25 @@ create_ofi(data)
 \arguments{
 \item{data}{A data.frame. The data needed to create the
 opportunities for improvements variable. Has to include the
-columns VK_avslutad, Problemomrade_.FMP, and Fr1-14. No default.}
+columns VK_avslutad, Problemomrade_.FMP,
+tra_DodsfallsanalysGenomford, and Fr1.14. No default.}
 }
 \description{
-Create opportunities for improvement variable, which is either yes or no
+Create opportunities for improvement variable, which is either yes
+or no
 }
 \details{
 Yes: The case was flagged and reviewed in a meeting and the
 consensus was that there were opportunities for improvement
 (variable Problemomrade_.FMP), or that the patient died and the
 death was determined as preventable or potentially preventable
-(variable Fr1-14 2 or 3).
+(variable Fr1.14 2 or 3).
 
 No: The consensus was that there were no opportunities for
 improvement, or the nurses in the initial review did not send the
 case for review because everything was okay (variable VK_avslutad).
+
+NA: The case was never selected for review or the patient died but
+whether the death was preventable is registered as unknown (Fr1.14
+999)
 }

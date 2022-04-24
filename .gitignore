@@ -2,3 +2,4 @@ PROJECT.org
 .Rproj.user
 .Rbuildignore
 rofi.Rproj
+/.env

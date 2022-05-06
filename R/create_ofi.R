@@ -42,38 +42,72 @@ create_ofi <- function(data,
                        preventable.death = "Fr1.14") {
     ## Check arguments
     assertthat::assert_that(is.data.frame(data))
-    variable.names <- c(quality.review.done, problem.area, mortality.review.done, preventable.death)
+    variable.names <- c(quality.review.done = quality.review.done,
+                        problem.area = problem.area,
+                        mortality.review.done = mortality.review.done,
+                        preventable.death = preventable.death)
     for (variable.name in variable.names) assertthat::assert_that(is.character(variable.name) & length(variable.name) == 1)
     assertthat::assert_that(all(variable.names %in% names(data)))
-    ## Create ofi variable
+
+    ## Check for data shift, i.e. that input data has changed since
+    ## this code was written
     ofi.data <- data[, variable.names]
-    data$Problemomrade_.FMP <- tolower(data$Problemomrade_.FMP)
-    levels.Problemomrade_.FMP <- unique(data$Problemomrade_.FMP)
-    original.levels.Problemomrade_.FMP <- c(NA, "ok", "triage på akutmottagningen",
-                                            "resurs", "lång tid till op", "lång tid till dt",
-                                            "vårdnivå", "traumakriterier/styrning",
-                                            "missad skada", "kommunikation", "neurokirurg",
-                                            "föredömligt handlagd", "logistik/teknik",
-                                            "dokumentation", "dokumetation", "bristande rutin", 
-                                            "handläggning", "kompetens brist", "tertiär survey")
-    if (!all(levels.Problemomrade_.FMP %in% original.levels.Problemomrade_.FMP))
-        stop ("Levels in Problemomrade._FMP have changed.")
-    levels.Fr1.14 <- unique(data$`Fr1.14`)
-    original.levels.Fr1.14 <- c(NA, "1", "3", "2", "999")
-    if (!all(levels.Fr1.14 %in% original.levels.Fr1.14))
-        stop ("Levels in Fr1.14 have changed.")
-    prob.filters <- with(data, `Problemomrade_.FMP` != "ok" & `Problemomrade_.FMP` != "föredömligt handlagd")
-    prob.mortality <- with(data, `Fr1.14` == "2" | `Fr1.14` == "3")
-    prob <- prob.filters | prob.mortality
-    mortality.peer.review.done <- data$tra_DodsfallsanalysGenomford == "1"
-    data$VK_avslutad <- tolower(data$VK_avslutad)
-    levels.VK_avslutad <- unique(data$VK_avslutad)
-    original.levels.VK_avslutad <- c("ja", NA, "nej")
-    if (!all(levels.VK_avslutad %in% original.levels.VK_avslutad))
-        stop ("Levels in VK_avslutad have changed.")
-    quality.process.done <- data$VK_avslutad == "ja" | mortality.peer.review.done
-    ofi <- ifelse(prob, "Yes",
-           ifelse(quality.process.done & !prob, "No", NA))
-    ofi[quality.process.done & is.na(prob) & data$Fr1.14 != "999"] <- "No"
+    names(ofi.data) <- names(variable.names)
+    ofi.data <- check_data_shift(ofi.data)
+
+    ## Create ofi variable
+
+    ## The starting point is that either the quality review or
+    ## mortality review process is done
+    ofi <- !with(ofi.data, quality.review.done == "ja" | mortality.review.done == 1)
+    ## If the problem area is not labelled as okay then there is an
+    ## opportunity for improvement
+    ofi[with(ofi.data, problem.area != "ok" & problem.area != "föredömligt handlagd")] <- TRUE
+    ## If the death is preventable or potentially prevantable then
+    ## there is an opportunity for improvement
+    ofi[with(ofi.data, preventable.death == "2" | preventable.death == "3")] <- TRUE
+    ## If the preventability is unknown then it is unknown if there is
+    ## an opportunity for improvement, unless there is an opportunity
+    ## for improvement according to the quality review
+    ofi[ofi.data$preventable.death == 999 & ofi == FALSE] <- NA
+
+    ## Make ofi character
+    ofi <- ifelse(ofi, "Yes", "No")
+
+    ## Return ofi vector
     return (ofi)
+}
+
+check_data_shift <- function(ofi.data) {
+    ## Check quality review done variable
+    ofi.data$quality.review.done <- tolower(as.character(ofi.data$quality.review.done))
+    levels.quality.review.done <- unique(ofi.data$quality.review.done)
+    original.levels.quality.review.done <- c("ja", NA, "nej")
+    if (!all(levels.quality.review.done %in% original.levels.quality.review.done))
+        stop ("Levels in the quality review done variable have changed.")
+    ## Check problem area variable
+    ofi.data$problem.area <- tolower(as.character(ofi.data$ problem.area))
+    levels.problem.area <- unique(ofi.data$problem.area)
+    original.levels.problem.area <- c(NA, "ok", "triage på akutmottagningen",
+                                      "resurs", "lång tid till op", "lång tid till dt",
+                                      "vårdnivå", "traumakriterier/styrning",
+                                      "missad skada", "kommunikation", "neurokirurg",
+                                      "föredömligt handlagd", "logistik/teknik",
+                                      "dokumentation", "dokumetation", "bristande rutin", 
+                                      "handläggning", "kompetens brist", "tertiär survey")
+    if (!all(levels.problem.area %in% original.levels.problem.area))
+        stop ("Levels in the problem area variable have changed.")
+    ## Check mortality review done variable
+    ofi.data$mortality.review.done <- tolower(as.character(ofi.data$mortality.review.done))
+    levels.mortality.review.done <- unique(ofi.data$mortality.review.done)
+    original.levels.mortality.review.done <- c(NA, 2, 1)
+    if (!all(levels.quality.review.done %in% original.levels.quality.review.done))
+        stop ("Levels in the mortality review done variable have changed.")
+    ## Check preventable death variable
+    levels.preventable.death <- unique(ofi.data$preventable.death)
+    original.levels.preventable.death <- c(NA, "1", "3", "2", "999")
+    if (!all(levels.preventable.death %in% original.levels.preventable.death))
+        stop ("Levels in the preventable death variable have changed.")
+    ## Return data
+    return (ofi.data)
 }

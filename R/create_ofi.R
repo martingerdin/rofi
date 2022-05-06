@@ -17,15 +17,36 @@
 #' whether the death was preventable is registered as unknown (Fr1.14
 #' 999)
 #' @param data A data.frame. The data needed to create the
-#'     opportunities for improvements variable. Has to include the
-#'     columns VK_avslutad, Problemomrade_.FMP,
-#'     tra_DodsfallsanalysGenomford, and Fr1.14. No default.
+#'     opportunities for improvements variable. Has to include columns
+#'     with tne names specified in the arguments quality.review.done,
+#'     problem.area, mortality.review.done, and preventable.death.  No
+#'     default.
+#' @param quality.review.done Character. The name of the quality
+#'     review done variable, which indicates if the quality review has
+#'     been completed. Defaults to "VK_avslutad".
+#' @param problem.area Character. The name of the problem area
+#'     variable, which indicates what, if any, problem area that were
+#'     identified. Defaults to "Problemomrade_.FMP".
+#' @param mortality.review.done Character. The name of the mortatlity
+#'     review done variable, which indicates if the mortality review
+#'     has been completed. Defaults to "tra_DodsfallsanalysGenomford".
+#' @param preventable.death Character. The name of the preventable
+#'     death variable, which indicates if a death was prevantable,
+#'     potentially proventable, and not preventable. Defaults to
+#'     "Fr1.14".
 #' @export
-create_ofi <- function(data) {
+create_ofi <- function(data,
+                       quality.review.done = "VK_avslutad",
+                       problem.area = "Problemomrade_.FMP",
+                       mortality.review.done = "tra_DodsfallsanalysGenomford",
+                       preventable.death = "Fr1.14") {
     ## Check arguments
     assertthat::assert_that(is.data.frame(data))
-    assertthat::assert_that(all(c("VK_avslutad", "Problemomrade_.FMP", "tra_DodsfallsanalysGenomford", "Fr1.14") %in% names(data)))
+    variable.names <- c(quality.review.done, problem.area, mortality.review.done, preventable.death)
+    for (variable.name in variable.names) assertthat::assert_that(is.character(variable.name) & length(variable.name) == 1)
+    assertthat::assert_that(all(variable.names %in% names(data)))
     ## Create ofi variable
+    ofi.data <- data[, variable.names]
     data$Problemomrade_.FMP <- tolower(data$Problemomrade_.FMP)
     levels.Problemomrade_.FMP <- unique(data$Problemomrade_.FMP)
     original.levels.Problemomrade_.FMP <- c(NA, "ok", "triage på akutmottagningen",

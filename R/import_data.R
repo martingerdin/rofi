@@ -15,7 +15,7 @@ import_data <- function(user = Sys.getenv("DB_USERNAME"),
                        user = user,
                        password = password,
                        db = db.name)
-    datasets <- lapply(table.names, function(table.name) DBI::dbReadTable(conn = conn, name = table.name))
+    datasets <- lapply(setNames(nm = table.names), function(table.name) DBI::dbReadTable(conn = conn, name = table.name))
     DBI::dbDisconnect(conn)
     return (datasets)
 }

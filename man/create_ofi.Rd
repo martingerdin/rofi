@@ -4,13 +4,37 @@
 \alias{create_ofi}
 \title{Create Opportunities For Improvement Variable}
 \usage{
-create_ofi(data)
+create_ofi(
+  data,
+  quality.review.done = "VK_avslutad",
+  problem.area = "Problemomrade_.FMP",
+  mortality.review.done = "tra_DodsfallsanalysGenomford",
+  preventable.death = "Fr1.14"
+)
 }
 \arguments{
 \item{data}{A data.frame. The data needed to create the
-opportunities for improvements variable. Has to include the
-columns VK_avslutad, Problemomrade_.FMP,
-tra_DodsfallsanalysGenomford, and Fr1.14. No default.}
+opportunities for improvements variable. Has to include columns
+with tne names specified in the arguments quality.review.done,
+problem.area, mortality.review.done, and preventable.death.  No
+default.}
+
+\item{quality.review.done}{Character. The name of the quality
+review done variable, which indicates if the quality review has
+been completed. Defaults to "VK_avslutad".}
+
+\item{problem.area}{Character. The name of the problem area
+variable, which indicates what, if any, problem area that were
+identified. Defaults to "Problemomrade_.FMP".}
+
+\item{mortality.review.done}{Character. The name of the mortatlity
+review done variable, which indicates if the mortality review
+has been completed. Defaults to "tra_DodsfallsanalysGenomford".}
+
+\item{preventable.death}{Character. The name of the preventable
+death variable, which indicates if a death was prevantable,
+potentially proventable, and not preventable. Defaults to
+"Fr1.14".}
 }
 \description{
 Create opportunities for improvement variable, which is either yes

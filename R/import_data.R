@@ -19,7 +19,7 @@
 #'     database. Defaults to c("swetrau", "fmp", "atgarder",
 #'     "problem", "kvalgranskning2014.2017").
 #' @param silent Logical. If FALSE a message is displayed with the
-#'     names of the imported datasets. Defaults to FALSE
+#'     names of the imported datasets. Defaults to FALSE.
 #' @return A list of data.frames.
 #' @export
 import_data <- function(user = Sys.getenv("DB_USERNAME"),

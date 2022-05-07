@@ -9,6 +9,7 @@
 #'     and "TempIdentity". The datasets "fmp" and "problem" have to
 #'     include the variables "Ankomst_te", "Personnummer", and
 #'     "Reservnummer".
+#' @export
 merge_data <- function(datasets) {
     ## Check arguments
     assertthat::assert_that(is.list(datasets))

@@ -25,7 +25,17 @@
 import_data <- function(user = Sys.getenv("DB_USERNAME"),
                         password = Sys.getenv("DB_PASSWORD"),
                         db.name = "opportunities_for_improvement",
-                        table.names = c("swetrau", "fmp", "atgarder", "problem", "kvalgranskning2014.2017"), silent = FALSE) {
+                        table.names = c("swetrau",
+                                        "fmp",
+                                        "atgarder",
+                                        "problem",
+                                        "kvalgranskning2014.2017"),
+                        silent = FALSE) {
+    ## Check arguments
+    for (argument in list(user, password, db.name))
+        assertthat::assert_that(is.character(argument) & length(argument) == 1)
+    assertthat::assert_that(is.character(table.names))
+    assertthat::assert_that(is.logical(silent) & length(silent) == 1)
     ## Create connection to the database
     conn <- DBI::dbConnect(drv = RMariaDB::MariaDB(),
                        user = user,

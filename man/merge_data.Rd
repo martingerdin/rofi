@@ -8,10 +8,10 @@ merge_data(datasets)
 }
 \arguments{
 \item{datasets}{A list of data.frames. Has to include the datasets
-"swetrau", "fmp", "atgarder", and "problem". The dataset
-"swetrau" has to include the variables
-"DateTime_ArrivalAtHospital", "PersonIdentity", and
-"TempIdentity". The datasets "fmp" and "problem" have to
+"swetrau", "fmp", "atgarder", "problem", and
+"kvalgranskning2014.2017". The dataset "swetrau" has to include
+the variables "DateTime_ArrivalAtHospital", "PersonIdentity",
+and "TempIdentity". The datasets "fmp" and "problem" have to
 include the variables "Ankomst_te", "Personnummer", and
 "Reservnummer".}
 }

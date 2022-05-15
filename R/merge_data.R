@@ -27,7 +27,7 @@ merge_data <- function(datasets) {
     kvalgranskning2014.2017$arrival <- as.POSIXct(strptime(as.character(sub(" UTC", "", kvalgranskning2014.2017$DateTime_ArrivalAtHospital, fixed = TRUE)), format = "%Y-%m-%d %H:%M:%S"))
     ## Create id variable by pasting arrival time and hashed identify
     swetrau$id <- with(swetrau, paste(arrival, PersonIdentity, TempIdentity))
-    fmp$id <- with(fmpt, paste(arrival, Personnummer, Reservnummer))
+    fmp$id <- with(fmp, paste(arrival, Personnummer, Reservnummer))
     problem$id <- with(problem, paste(arrival, Personnummer, Reservnummer))
     kvalgranskning2014.2017$id <- with(kvalgranskning2014.2017, paste(arrival, pat_personnummer, pat_TempPersonnummer))
     ## Combine datasets

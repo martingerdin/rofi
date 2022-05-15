@@ -60,6 +60,8 @@ create_ofi <- function(data,
     ## The starting point is that either the quality review or
     ## mortality review process is done
     ofi <- !with(ofi.data, quality.review.done == "ja" | mortality.review.done == 1)
+    ## If neither of them are done, then ofi should be NA
+    ofi[ofi] <- NA
     ## If the problem area is not labelled as okay then there is an
     ## opportunity for improvement
     ofi[with(ofi.data, problem.area != "ok" & problem.area != "föredömligt handlagd")] <- TRUE

@@ -5,19 +5,22 @@
 \title{Import Data}
 \usage{
 import_data(
-  user = Sys.getenv("DB_USERNAME"),
-  password = Sys.getenv("DB_PASSWORD"),
+  user = NULL,
+  password = NULL,
   db.name = "opportunities_for_improvement",
   table.names = c("swetrau", "fmp", "atgarder", "problem", "kvalgranskning2014.2017"),
+  env.file = ".env",
   silent = FALSE
 )
 }
 \arguments{
-\item{user}{Character. Your username to connect to the
-database. Defaults to Sys.getenv("DB_USERNAME").}
+\item{user}{Character or NULL. The default is NULL in which case
+the username is read from the corresponding environment
+variable called DB_USERNAME, using Sys.getenv("DB_USERNAME").}
 
-\item{password}{Character. Your password to connect to the
-database. Defaults to Sys.getenv("DB_PASSWORD").}
+\item{password}{Character. The default is NULL in which case the
+password is read from the corresponding environment variable
+called DB_PASSWORD, using Sys.getenv("DB_PASSWORD").}
 
 \item{db.name}{Character. The name of the database. Defaults to
 "opportunities_for_improvement".}
@@ -25,6 +28,10 @@ database. Defaults to Sys.getenv("DB_PASSWORD").}
 \item{table.names}{Character. The name(s) of the table(s) in the
 database. Defaults to c("swetrau", "fmp", "atgarder",
 "problem", "kvalgranskning2014.2017").}
+
+\item{env.file}{Character. The name of the file defining the
+environment variables used to connect to the database. Defaults
+to ".env".}
 
 \item{silent}{Logical. If FALSE a message is displayed with the
 names of the imported datasets. Defaults to FALSE.}

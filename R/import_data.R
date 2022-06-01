@@ -83,6 +83,8 @@ import_data <- function(user = NULL,
             stop ("No environment variable called DB_PASSWORD was found.")
     }
     ## Create connection to the database
+    if (test)
+        db.name <- test.db.name
     conn <- DBI::dbConnect(drv = RMariaDB::MariaDB(),
                        user = user,
                        password = password,

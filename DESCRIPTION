@@ -14,7 +14,8 @@ Imports:
     RMariaDB,
     keyring,
     assertthat,
-    dotenv
+    dotenv,
+    askpass
 Depends: 
     R (>= 2.10)
 Suggests: 

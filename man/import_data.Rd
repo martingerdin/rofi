@@ -8,8 +8,11 @@ import_data(
   user = NULL,
   password = NULL,
   db.name = "opportunities_for_improvement",
+  test.db.name = paste0(db.name, "_scrambled"),
   table.names = c("swetrau", "fmp", "atgarder", "problem", "kvalgranskning2014.2017"),
   env.file = ".env",
+  ask = TRUE,
+  test = FALSE,
   silent = FALSE
 )
 }
@@ -25,6 +28,10 @@ called DB_PASSWORD, using Sys.getenv("DB_PASSWORD").}
 \item{db.name}{Character. The name of the database. Defaults to
 "opportunities_for_improvement".}
 
+\item{test.db.name}{Character. The name of the test
+database. Defaults to \code{paste0(db.name, "_scrambled")} and is
+only used if test = TRUE.}
+
 \item{table.names}{Character. The name(s) of the table(s) in the
 database. Defaults to c("swetrau", "fmp", "atgarder",
 "problem", "kvalgranskning2014.2017").}
@@ -32,6 +39,13 @@ database. Defaults to c("swetrau", "fmp", "atgarder",
 \item{env.file}{Character. The name of the file defining the
 environment variables used to connect to the database. Defaults
 to ".env".}
+
+\item{ask}{Logical. If TRUE you will be prompted to enter your user
+name and password to access the database, if these are not
+available as environment variables. Defaults to TRUE.}
+
+\item{test}{Logical. If TRUE the test, also called scrambled,
+version of the data will be imported. Defaults to FALSE.}
 
 \item{silent}{Logical. If FALSE a message is displayed with the
 names of the imported datasets. Defaults to FALSE.}

@@ -8,8 +8,8 @@ import_data(
   user = NULL,
   password = NULL,
   db.name = "opportunities_for_improvement",
-  test.db.name = paste0(db.name, "_scrambled"),
   table.names = c("swetrau", "fmp", "atgarder", "problem", "kvalgranskning2014.2017"),
+  ignore.missing.table = TRUE,
   env.file = ".env",
   ask = TRUE,
   test = FALSE,
@@ -28,13 +28,13 @@ called DB_PASSWORD, using Sys.getenv("DB_PASSWORD").}
 \item{db.name}{Character. The name of the database. Defaults to
 "opportunities_for_improvement".}
 
-\item{test.db.name}{Character. The name of the test
-database. Defaults to \code{paste0(db.name, "_scrambled")} and is
-only used if test = TRUE.}
-
 \item{table.names}{Character. The name(s) of the table(s) in the
 database. Defaults to c("swetrau", "fmp", "atgarder",
 "problem", "kvalgranskning2014.2017").}
+
+\item{ignore.missing.table}{Logical. If TRUE the function will
+continue even if a table with the name specified in table.names
+does not exist in the database. Defaults to TRUE.}
 
 \item{env.file}{Character. The name of the file defining the
 environment variables used to connect to the database. Defaults

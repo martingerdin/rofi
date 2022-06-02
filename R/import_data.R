@@ -20,6 +20,9 @@
 #' @param table.names Character. The name(s) of the table(s) in the
 #'     database. Defaults to c("swetrau", "fmp", "atgarder",
 #'     "problem", "kvalgranskning2014.2017").
+#' @param ignore.missing.table Logical. If TRUE the function will
+#'     continue even if a table with the name specified in table.names
+#'     does not exist in the database. Defaults to TRUE.
 #' @param env.file Character. The name of the file defining the
 #'     environment variables used to connect to the database. Defaults
 #'     to ".env".
@@ -40,12 +43,13 @@ import_data <- function(user = NULL,
                                         "atgarder",
                                         "problem",
                                         "kvalgranskning2014.2017"),
+                        ignore.missing.table = TRUE,
                         env.file = ".env",
                         ask = TRUE,
                         test = FALSE,
                         silent = FALSE) {
     ## Check arguments
-    for (argument in list(user, password, db.name, test.db.name))
+    for (argument in list(user, password, db.name))
         assertthat::assert_that(is.null(argument) || (is.character(argument) & length(argument) == 1))
     assertthat::assert_that(is.character(table.names))
     for (argument in list(silent, test))
@@ -81,14 +85,24 @@ import_data <- function(user = NULL,
     ## Create connection to the database
     if (test) {
         db.name <- paste0(db.name, "_scrambled")
-        table.names <- paste0(tables.names, "_scrambled")
+        table.names <- paste0(table.names, "_scrambled")
     }
     conn <- DBI::dbConnect(drv = RMariaDB::MariaDB(),
                        user = user,
                        password = password,
                        db = db.name)
-    datasets <- lapply(setNames(nm = table.names), function(table.name) DBI::dbReadTable(conn = conn, name = table.name))
+    datasets <- lapply(setNames(nm = table.names), function(table.name) {
+        tryCatch(expr = DBI::dbReadTable(conn = conn, name = table.name),
+                 error = function (e) {
+                     if (!ignore.missing.table)
+                         stop (e)
+                     if (!silent)
+                         warning (paste0("The table ", table.name, " was not found in the database"))
+                     return (NULL)
+                 })
+    })
     DBI::dbDisconnect(conn)
+    datasets <- datasets[!sapply(datasets, is.null)]
     if (!silent)
         message(paste0("The datasets ", paste0(names(datasets), collapse = ", "), " have been imported."))
     return (datasets)

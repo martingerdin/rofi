@@ -17,9 +17,6 @@
 #'     called DB_PASSWORD, using Sys.getenv("DB_PASSWORD").
 #' @param db.name Character. The name of the database. Defaults to
 #'     "opportunities_for_improvement".
-#' @param test.db.name Character. The name of the test
-#'     database. Defaults to `paste0(db.name, "_scrambled")` and is
-#'     only used if test = TRUE.
 #' @param table.names Character. The name(s) of the table(s) in the
 #'     database. Defaults to c("swetrau", "fmp", "atgarder",
 #'     "problem", "kvalgranskning2014.2017").
@@ -38,7 +35,6 @@
 import_data <- function(user = NULL,
                         password = NULL,
                         db.name = "opportunities_for_improvement",
-                        test.db.name = paste0(db.name, "_scrambled"),
                         table.names = c("swetrau",
                                         "fmp",
                                         "atgarder",
@@ -83,8 +79,10 @@ import_data <- function(user = NULL,
             stop ("No environment variable called DB_PASSWORD was found.")
     }
     ## Create connection to the database
-    if (test)
-        db.name <- test.db.name
+    if (test) {
+        db.name <- paste0(db.name, "_scrambled")
+        table.names <- paste0(tables.names, "_scrambled")
+    }
     conn <- DBI::dbConnect(drv = RMariaDB::MariaDB(),
                        user = user,
                        password = password,

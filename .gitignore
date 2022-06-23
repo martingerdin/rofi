@@ -3,3 +3,4 @@ PROJECT.org
 .Rbuildignore
 rofi.Rproj
 /.env
+.Rhistory

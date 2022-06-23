@@ -15,7 +15,9 @@ Imports:
     keyring,
     assertthat,
     dotenv,
-    askpass
+    askpass,
+    usethis,
+    rmarkdown
 Depends: 
     R (>= 2.10)
 Suggests: 

@@ -12,27 +12,40 @@ knitr::opts_chunk$set(echo = TRUE)
 authoring HTML, PDF, and MS Word documents. For more details on using R Markdown 
 see http://rmarkdown.rstudio.com -->
 
-<!-- Structure and most comments are from the Strengthening the reporting of 
-observational studies in epidemiology (STROBE) statement, 
-see https://www.strobe-statement.org/ -->
+<!-- This is a comment and will not be present in the compiled
+document. Try "knitting" this document by clicking the knit button up
+to the left, or by running `rmarkdown::render("manuscript.Rmd")` in
+the console and you should only see headings -->
+
+<!-- Structure and most comments are from the Strengthening the
+reporting of observational studies in epidemiology (STROBE) statement,
+see https://www.strobe-statement.org/. For more explanations see the
+paper Strengthening the Reporting of Observational Studies in
+Epidemiology (STROBE):explanation and elaboration.  -->
 
 <!-- Indicate the study’s design with a commonly used term in the title, for 
 example: "Associations between resuscitation interventions and opportunities for 
 improvement in adult trauma patients: A cohort study" -->
 
-# Abstract
+Abstract
+========
 <!-- Provide in the abstract an informative and balanced summary of what was 
 done and what was found. Not more than 300 words. -->
 
-## Background
+Background
+----------
 
-## Methods
+Methods
+-------
 
-## Results
+Results
+-------
 
-## Conclusion
+Conclusion
+----------
 
-# Introduction
+Introduction
+============
 
 <!-- Explain the scientific background and rationale for the investigation being 
 reported. End by stating the aim or specific objectives, including any 
@@ -40,16 +53,20 @@ prespecified hypotheses. The introduction should not be longer than 1-1.5 pages,
 typically 4-5 paragraphs, each 6-8 lines long. Support every statement with a 
 citation -->
 
-# Methods 
+Methods 
+=======
 
-## Study design
+Study design
+------------
 <!-- Present key elements of study design -->
 
-## Setting
+Setting
+-------
 <!-- Describe the setting, locations, and relevant dates, including periods of 
 recruitment, exposure, follow-up, and data collection -->
 
-## Participants
+Participants
+------------
 <!-- Cohort study: Give the eligibility criteria, and the sources and methods of 
 selection of participants. Describe methods of follow-up. For matched studies, 
 give matching criteria and number of exposed and unexposed -->
@@ -62,24 +79,29 @@ the number of controls per case -->
 <!-- Cross-sectional study: Give the eligibility criteria, and the sources and 
 methods of selection of participants -->
 
-## Variables and data sources/measurements
+Variables and data sources/measurements
+---------------------------------------
 <!-- Clearly define all outcomes, exposures, predictors, potential confounders, 
 and effect modifiers. Give diagnostic criteria, if applicable. For each variable 
 of interest, give sources of data and details of methods of assessment 
 (measurement). Describe comparability of assessment methods if there 
 is more than one group  -->
 
-## Bias 
+Bias 
+----
 <!-- Describe any efforts to address potential sources of bias -->
 
-## Study size 
+Study size 
+----------
 <!-- Explain how the study size was arrived at -->
 
-## Quantitative variables
+Quantitative variables
+----------------------
 <!-- Explain how quantitative variables were handled in the analyses. If applicable, 
 describe which groupings were chosen and why -->
 
-## Statistical methods
+Statistical methods
+-------------------
 <!-- 
 (a) Describe all statistical methods, including those used to control for confounding 
 (b) Describe any methods used to examine subgroups and interactions 
@@ -92,22 +114,105 @@ of sampling strategy
 (e) Describe any sensitivity analyses
 -->
 
-## R Markdown
+Results
+=======
+<!-- 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Participants
+------------
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+(a) Report numbers of individuals at each stage of study—eg numbers
+potentially eligible, examined for eligibility, confirmed eligible,
+included in the study, completing follow-up, and analysed
 
-```{r cars}
-summary(cars)
+(b) Give reasons for non-participation at each stage
+
+(c) Consider use of a flow diagram
+
+Descriptive data
+----------------
+
+(a) Give characteristics of study participants (eg demographic,
+clinical, social) and information on exposures and potential
+confounders
+
+(b) Indicate number of participants with missing data for each
+variable of interest
+
+(c) Cohort study — Summarise follow-up time (eg, average and total
+amount)
+
+Outcome data
+------------
+
+Cohort study — Report numbers of outcome events or summary measures
+over time
+
+Case-control study — Report numbers in each exposure category, or
+summary measures of exposure
+
+Cross-sectional study — Report numbers of outcome events or summary
+measures
+
+Main results
+------------
+
+(a) Give unadjusted estimates and, if applicable, confounder-adjusted
+estimates and their precision (eg, 95% confidence interval). Make
+clear which confounders were adjusted for and why they were included
+
+(b) Report category boundaries when continuous variables were
+categorized
+
+(c) If relevant, consider translating estimates of relative risk into
+absolute risk for a meaningful time period
+
+Other analyses 
+--------------
+
+Report other analyses done—eg analyses of subgroups and interactions, and sensitivity
+analyses 
+-->
+
+You can include code in this document like this:
+
+```{r main, echo=FALSE}
+source("main.R") ## This "imports" the main script file of your project and run any code in it
 ```
 
-## Including Plots
+You can also embed plots:
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
+```{r plot, echo=FALSE}
 plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+You can also mix text and code, so called inline code, like this: `r 2+5`.
+
+Discussion
+==========
+
+<!--
+Key results
+-----------
+Summarise key results with reference to study objectives
+
+Limitations
+-----------
+
+Discuss limitations of the study, taking into account sources of potential bias or imprecision.
+Discuss both direction and magnitude of any potential bias
+
+Interpretation
+--------------
+Give a cautious overall interpretation of results considering objectives, limitations, multiplicity
+of analyses, results from similar studies, and other relevant evidence
+
+Generalisability
+----------------
+Discuss the generalisability (external validity) of the study results 
+
+-->
+
+Conclusion
+==========
+<!-- Give a short conclusion, corresponding to the aim -->

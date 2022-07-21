@@ -8,16 +8,89 @@ author: "Your name here"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<!-- This is an R Markdown document. Markdown is a simple formatting syntax for 
+authoring HTML, PDF, and MS Word documents. For more details on using R Markdown 
+see http://rmarkdown.rstudio.com -->
 
-<!-- 
-Indicate the study’s design with a commonly used term in the title, for example:
-"Associations between resuscitation interventions and opportunities for 
-improvement in adult trauma patients: A cohort study"
--->
+<!-- Structure and most comments are from the Strengthening the reporting of 
+observational studies in epidemiology (STROBE) statement, 
+see https://www.strobe-statement.org/ -->
+
+<!-- Indicate the study’s design with a commonly used term in the title, for 
+example: "Associations between resuscitation interventions and opportunities for 
+improvement in adult trauma patients: A cohort study" -->
 
 # Abstract
 <!-- Provide in the abstract an informative and balanced summary of what was 
-done and what was found-->
+done and what was found. Not more than 300 words. -->
+
+## Background
+
+## Methods
+
+## Results
+
+## Conclusion
+
+# Introduction
+
+<!-- Explain the scientific background and rationale for the investigation being 
+reported. End by stating the aim or specific objectives, including any 
+prespecified hypotheses. The introduction should not be longer than 1-1.5 pages, 
+typically 4-5 paragraphs, each 6-8 lines long. Support every statement with a 
+citation -->
+
+# Methods 
+
+## Study design
+<!-- Present key elements of study design -->
+
+## Setting
+<!-- Describe the setting, locations, and relevant dates, including periods of 
+recruitment, exposure, follow-up, and data collection -->
+
+## Participants
+<!-- Cohort study: Give the eligibility criteria, and the sources and methods of 
+selection of participants. Describe methods of follow-up. For matched studies, 
+give matching criteria and number of exposed and unexposed -->
+
+<!-- Case-control study: Give the eligibility criteria, and the sources and +
+methods of case ascertainment and control selection. Give the rationale for the 
+choice of cases and controls. For matched studies, give matching criteria and 
+the number of controls per case -->
+
+<!-- Cross-sectional study: Give the eligibility criteria, and the sources and 
+methods of selection of participants -->
+
+## Variables and data sources/measurements
+<!-- Clearly define all outcomes, exposures, predictors, potential confounders, 
+and effect modifiers. Give diagnostic criteria, if applicable. For each variable 
+of interest, give sources of data and details of methods of assessment 
+(measurement). Describe comparability of assessment methods if there 
+is more than one group  -->
+
+## Bias 
+<!-- Describe any efforts to address potential sources of bias -->
+
+## Study size 
+<!-- Explain how the study size was arrived at -->
+
+## Quantitative variables
+<!-- Explain how quantitative variables were handled in the analyses. If applicable, 
+describe which groupings were chosen and why -->
+
+## Statistical methods
+<!-- 
+(a) Describe all statistical methods, including those used to control for confounding 
+(b) Describe any methods used to examine subgroups and interactions 
+(c) Explain how missing data were addressed 
+(d) Cohort study: If applicable, explain how loss to follow-up was addressed 
+Case-control study—If applicable, explain how matching of cases and controls was 
+addressed 
+Cross-sectional study: If applicable, describe analytical methods taking account 
+of sampling strategy 
+(e) Describe any sensitivity analyses
+-->
 
 ## R Markdown
 

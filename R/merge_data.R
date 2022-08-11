@@ -15,7 +15,8 @@ merge_data <- function(datasets) {
     assertthat::assert_that(is.list(datasets))
     dataset.names <- c("swetrau", "fmp", "atgarder", "problem", "kvalgranskning2014.2017")
     assertthat::assert_that(all(dataset.names %in% names(datasets)))
-merge_data <- function(datasets) {
+
+    ## First merge old review data with swetrau
     kval <- datasets$kvalgranskning2014.2017
     swe <- datasets$swetrau
 

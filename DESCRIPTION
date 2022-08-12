@@ -8,7 +8,7 @@ Description: This package contains utility functions for working with the opport
 License: `use_gpl3_license()`
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Imports: 
     DBI,
     RMariaDB,
@@ -17,9 +17,12 @@ Imports:
     dotenv,
     askpass,
     usethis,
-    rmarkdown
+    rmarkdown,
+    noacsr
 Depends: 
     R (>= 2.10)
 Suggests: 
     testthat (>= 3.0.0)
+Remotes:
+    martingerdin/noacsr
 Config/testthat/edition: 3

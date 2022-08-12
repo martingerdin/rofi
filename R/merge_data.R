@@ -327,7 +327,13 @@ merge_data <- function(datasets) {
     merged3$DateTime_of_Alarm  <- as.POSIXct(strptime(merged3$DateTime_of_Alarm, format = "%Y-%m-%d %H:%M"))
     merged3$DateTime_Of_Trauma <- as.POSIXct(strptime(merged3$DateTime_Of_Trauma, format = "%Y-%m-%d %H:%M"))
     merged3$DateTime_ArrivalAtScene <- as.POSIXct(strptime(merged3$DateTime_ArrivalAtScene, format = "%Y-%m-%d %H:%M"))
+
+    ## Rename combined datasets
     combined.datasets <- merged3
+
+    ## Remove extra columns
+    columns.to.remove <- c("id.x", "id.y", "arrival.x", "arrival.y", "origin.x", "origin.y")
+    for (column in columns.to.remove) combined.datasets[, column] <- NULL
     combined.datasets$did.y <- NULL
     return(combined.datasets)
 }

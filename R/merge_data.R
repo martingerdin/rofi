@@ -11,6 +11,8 @@
 #'     "Reservnummer".
 #' @export
 merge_data <- function(datasets) {
+    ## Ideally all "checks" below should be refactored as tests
+    
     ## Check arguments
     assertthat::assert_that(is.list(datasets))
     dataset.names <- c("swetrau", "fmp", "atgarder", "problem", "kvalgranskning2014.2017")
@@ -42,35 +44,34 @@ merge_data <- function(datasets) {
     swe$arrival <- as.Date(strptime(swe$DateTime_ArrivalAtHospital, format = "%Y-%m-%d %H:%M"))
 
     ## Check number of duplicate did in kval and SweTrau
-    sum(duplicated(kval$did)) ## 0 duplicates
-    sum(duplicated(swe$did)) ## 2 duplicates
+    ## sum(duplicated(kval$did)) ## 0 duplicates
+    ## sum(duplicated(swe$did)) ## 2 duplicates
 
     ## Check number of patients from kval that are not present in SweTrau
     not.in.swetrau <- !(kval$did %in% swe$did)
-    sum(not.in.swetrau) ## 9 patients from kval are not present in SweTrau
+    ## sum(not.in.swetrau) ## 9 patients from kval are not present in SweTrau
 
     ## Check number of matched patients if we merge on did
-    sum(merge(swe, kval, by = "did", all.x = TRUE)$origin == "kval", na.rm = TRUE) ## 596 patients are matched, i.e. 605 - 9, which makes sense
+    ## sum(merge(swe, kval, by = "did", all.x = TRUE)$origin == "kval", na.rm = TRUE) ## 596 patients are matched, i.e. 605 - 9, which makes sense
 
     ## The result of the above is the same as if merging on each of the
     ## variables included in did "separately", i.e:
-    sum(merge(swe, kval,
-              by.x = c("PersonIdentity", "TempIdentity", "arrival"),
-              by.y = c("pat_personnummer", "pat_TempPersonnummer", "arrival"),
-              all.x = TRUE)$origin == "kval", na.rm = TRUE) ## Also results in 9 missng
+    ## sum(merge(swe, kval,
+    ##           by.x = c("PersonIdentity", "TempIdentity", "arrival"),
+    ##           by.y = c("pat_personnummer", "pat_TempPersonnummer", "arrival"),
+    ##           all.x = TRUE)$origin == "kval", na.rm = TRUE) ## Also results in 9 missng
 
     ## Check if tra_id or pat_id of those in kval whose did is missing from SweTrau
     ## are present in SweTrau
-    sum(kval$tra_id[not.in.swetrau] %in% swe$tra_id) ## The tra_id of 4/9 patients are in SweTrau
-    sum(kval$pat_id[not.in.swetrau] %in% swe$pat_id) ## The pat_id of 4/9 patients are in SweTrau
-    identical(sum(kval$tra_id[not.in.swetrau] %in% swe$tra_id), sum(kval$pat_id[not.in.swetrau] %in% swe$pat_id)) ## It's the same 4 patients whose tra_id and pat_id are in SweTrau, so it doesn't matter if we try matching on tra_id or pat_id
+    ## sum(kval$tra_id[not.in.swetrau] %in% swe$tra_id) ## The tra_id of 4/9 patients are in SweTrau
+    ## sum(kval$pat_id[not.in.swetrau] %in% swe$pat_id) ## The pat_id of 4/9 patients are in SweTrau
+    ## identical(sum(kval$tra_id[not.in.swetrau] %in% swe$tra_id), sum(kval$pat_id[not.in.swetrau] %in% swe$pat_id)) ## It's the same 4 patients whose tra_id and pat_id are in SweTrau, so it doesn't matter if we try matching on tra_id or pat_id
 
     ##
     ## NEW CODE - need to change pat_id, screened and know these two are wrong and should be:
     kval[is.element(kval$pat_id,c(33973)),"tra_id"] <- c(36078)
     kval[is.element(kval$pat_id,c(33922)),"tra_id"] <- c(36024)
     ##
-
 
     ## Try matching some extra patients based on tra_id 
     merged <- merge(swe, kval, by = "did", all.x = TRUE)
@@ -124,7 +125,7 @@ merge_data <- function(datasets) {
     merged$did <- merged$did.x
     merged$did.x <- NULL
     ## Check how many additional matches we got
-    sum(merged$origin.x == "kval" | merged$origin.y == "kval", na.rm = TRUE ) ## 600, so we matched four additional patients, leaving 5 unmatched
+    ## sum(merged$origin.x == "kval" | merged$origin.y == "kval", na.rm = TRUE ) ## 600, so we matched four additional patients, leaving 5 unmatched
 
     ## This is probably as good as it gets, and we'll have to live with
     ## having 5 unmatched patients between kval and SweTrau
@@ -138,8 +139,8 @@ merge_data <- function(datasets) {
 
     merged2 <- merged
     for (x in 1:length(col.names.x)) {
-        merged2[is.na(merged2[,col.names.x[x]]) == TRUE, col.names.x[x]] <- 
-            merged2[is.na(merged2[,col.names.x[x]]) == TRUE,col.names.y[x]]
+        merged2[is.na(merged2[, col.names.x[x]]) == TRUE, col.names.x[x]] <- 
+            merged2[is.na(merged2[, col.names.x[x]]) == TRUE, col.names.y[x]]
     }
 
     ## Removes excess collumnes (.y) since .y is inserted into .x wherever .x was empty.
@@ -175,12 +176,12 @@ merge_data <- function(datasets) {
     ## Create id, arrival and did variables
     fmp.problem$id <- fmp$Personnummer
     fmp.problem$id[is.na(fmp.problem$id)] <- fmp.problem$Reservnummer[is.na(fmp.problem$Personnummer)]
-    sum(is.na(fmp.problem$id)) ## No missing id values
+    ## sum(is.na(fmp.problem$id)) ## No missing id values
     fmp.problem$arrival <- as.Date(strptime(fmp.problem$Ankomst_te, format = "%Y%m%d %H:%M"))
     fmp.problem$did <- paste(fmp.problem$id, fmp.problem$arrival)
 
     ## Check for duplicates
-    sum(duplicated(fmp.problem$did)) ## 22 duplicates
+    ## sum(duplicated(fmp.problem$did)) ## 22 duplicates
 
     ## Check each of the 22 duplicates
     ## duplicated.dids <- fmp$did[duplicated(fmp.problem$did)]
@@ -208,16 +209,16 @@ merge_data <- function(datasets) {
     fmp.problem <- fmp.problem[-remove, ]
 
     ## Check that all duplicates are removed
-    sum(duplicated(fmp.problem$did)) ## 0, all duplicates removed
+    ## sum(duplicated(fmp.problem$did)) ## 0, all duplicates removed
 
     ## Now let's merge SweTrau with this fmp.problem using did
     fmp.problem$origin <- 1:nrow(fmp.problem)
     merged.swetrau.fmp.problem <- merge(merged, fmp.problem, by = "did", all.x = TRUE)
 
     ## Check how many from swetrau that were not matched in fmp.problem
-    sum(is.na(merged.swetrau.fmp.problem$origin.y)) ## 264 cases from SweTrau are not in fmp.problem
+    ## sum(is.na(merged.swetrau.fmp.problem$origin.y)) ## 264 cases from SweTrau are not in fmp.problem
     not.in.fmp.problem <- merged[!(merged$did %in% fmp.problem$did), c("did", "did", "id", "PersonIdentity", "TempIdentity", "Gender", "DateTime_ArrivalAtHospital", "arrival")]
-    nrow(not.in.fmp.problem)
+    ## nrow(not.in.fmp.problem)
     ## to.keep <- apply(not.in.fmp.problem, 1, function(case) {
     ##     matching.cases <- fmp.problem[fmp.problem$id == case["id.x"], ]
     ##     if (nrow(matching.cases) > 0) {
@@ -253,7 +254,7 @@ merge_data <- function(datasets) {
 
     ## Redo merge
     merged.swetrau.fmp.problem <- merge(merged, fmp.problem, by = "did", all.x = TRUE)
-    sum(is.na(merged.swetrau.fmp.problem$origin.y)) ## 262 cases are still missing from swetrau in fmp.problem
+    ## sum(is.na(merged.swetrau.fmp.problem$origin.y)) ## 262 cases are still missing from swetrau in fmp.problem
 
     merged <- merged.swetrau.fmp.problem
 
@@ -261,17 +262,16 @@ merge_data <- function(datasets) {
     ## Combine ID:S
     ##
 
-    merged[is.na(merged[,"PersonIdentity"]) == TRUE, "PersonIdentity"] <- 
-        merged[is.na(merged[,"PersonIdentity"]) == TRUE,"pat_personnummer"]
+    merged[is.na(merged[, "PersonIdentity"]) == TRUE, "PersonIdentity"] <- 
+        merged[is.na(merged[, "PersonIdentity"]) == TRUE, "pat_personnummer"]
 
-    merged[is.na(merged[,"TempIdentity"]) == TRUE, "TempIdentity"] <- 
-        merged[is.na(merged[,"TempIdentity"]) == TRUE,"pat_TempPersonnummer"]
+    merged[is.na(merged[, "TempIdentity"]) == TRUE, "TempIdentity"] <- 
+        merged[is.na(merged[, "TempIdentity"]) == TRUE, "pat_TempPersonnummer"]
 
     ##merged$pat_personnummer <- NULL     Shold we remove?
     ##merged$pat_TempPersonnummer <- NULL
 
     ## Columns that should be translated into another column, cant find another way but manual? 
-
     VK.colnames <- c("VK_hlr_thorak","VK_sap_less90","VK_iss_15_ej_iva",
                      "VK_gcs_less9_ej_intubTE","VK_mer_30min_DT","VK_mer_60min_interv")
 
@@ -280,12 +280,12 @@ merge_data <- function(datasets) {
 
     merged2 <- merged
     for (x in 1:length(VK.colnames)){
-        merged2[,VK.colnames[x]] <- with(merged2, ifelse(merged2[,kval.colnames[x]] == 1 & is.na(merged2[,VK.colnames[x]]) == TRUE, "Ja", merged2[,VK.colnames[x]]))
-        merged2[,VK.colnames[x]] <- with(merged2, ifelse(merged2[,kval.colnames[x]] == 0 & is.na(merged2[,VK.colnames[x]]) == TRUE, "Nej", merged2[,VK.colnames[x]]))
+        merged2[, VK.colnames[x]] <- with(merged2, ifelse(merged2[, kval.colnames[x]] == 1 & is.na(merged2[, VK.colnames[x]]) == TRUE, "Ja", merged2[, VK.colnames[x]]))
+        merged2[, VK.colnames[x]] <- with(merged2, ifelse(merged2[, kval.colnames[x]] == 0 & is.na(merged2[, VK.colnames[x]]) == TRUE, "Nej", merged2[, VK.colnames[x]]))
     }
     ## Now all kval.colnames should be in VK_ collumns instead, hence remove
 
-    merged2[,kval.colnames] <- NULL
+    merged2[, kval.colnames] <- NULL
 
     ## Convert problemområde to problemområde_.FMP
     ##merged2$Problemomrade_.FMP <- with(merged2, ifelse(is.na(merged2$Problemomrade_.FMP) == TRUE, `problemområde`, `Problemomrade_.FMP`))

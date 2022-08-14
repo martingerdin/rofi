@@ -64,7 +64,12 @@ create_ofi <- function(data,
     ofi[ofi] <- NA
     ## If the problem area is not labelled as okay then there is an
     ## opportunity for improvement
-    ofi[with(ofi.data, problem.area != "ok" & problem.area != "föredömligt handlagd")] <- TRUE
+    
+    ############
+    # New code # Why & (and) for problem.area and | (or) for preventable death?
+    ############
+    ofi[with(ofi.data, problem.area != "ok" & problem.area != "föredömligt handlagd" 
+             & problem.area != "inget problemområde" & problem.area != "nej")] <- TRUE
     ## If the death is preventable or potentially prevantable then
     ## there is an opportunity for improvement
     ofi[with(ofi.data, preventable.death == "2" | preventable.death == "3")] <- TRUE
@@ -72,13 +77,12 @@ create_ofi <- function(data,
     ## an opportunity for improvement, unless there is an opportunity
     ## for improvement according to the quality review
     ofi[ofi.data$preventable.death == 999 & ofi == FALSE] <- NA
-
+    
     ## Make ofi character
     ofi <- ifelse(ofi, "Yes", "No")
-
+    
     ## Return ofi vector
     return (ofi)
-}
 
 check_data_shift <- function(ofi.data) {
     ## Check quality review done variable
@@ -90,13 +94,18 @@ check_data_shift <- function(ofi.data) {
     ## Check problem area variable
     ofi.data$problem.area <- tolower(as.character(ofi.data$ problem.area))
     levels.problem.area <- unique(ofi.data$problem.area)
-    original.levels.problem.area <- c(NA, "ok", "triage på akutmottagningen",
-                                      "resurs", "lång tid till op", "lång tid till dt",
-                                      "vårdnivå", "traumakriterier/styrning",
-                                      "missad skada", "kommunikation", "neurokirurg",
-                                      "föredömligt handlagd", "logistik/teknik",
-                                      "dokumentation", "dokumetation", "bristande rutin", 
-                                      "handläggning", "kompetens brist", "tertiär survey")
+    ############
+    # New code #
+    ############
+    
+    original.levels.problem.area  <- c(NA,"ok","triage på akutmottagningen","vårdnivå","handläggning",
+                                       "logistik/teknik","resurs","missad skada","lång tid till op",
+                                       "kompetens brist","inget problemområde","föredömligt handlagd",
+                                       "kommunikation","handläggning/logistik","traumakriterier/styrning",
+                                       "lång tid till dt","triage på akm","tertiär survey","ok","nej",
+                                       "dokumentation","bristande rutin","ok","neurokirurg","dokumetation")
+    
+## End new code    
     if (!all(levels.problem.area %in% original.levels.problem.area))
         stop ("Levels in the problem area variable have changed.")
     ## Check mortality review done variable

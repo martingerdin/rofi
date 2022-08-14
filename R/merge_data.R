@@ -329,11 +329,36 @@ merge_data <- function(datasets) {
     merged3$DateTime_ArrivalAtScene <- as.POSIXct(strptime(merged3$DateTime_ArrivalAtScene, format = "%Y-%m-%d %H:%M"))
 
     ## Rename combined datasets
-    combined.datasets <- merged3
+    merged <- merged3
 
-    ## Remove extra columns
-    columns.to.remove <- c("id.x", "id.y", "arrival.x", "arrival.y", "origin.x", "origin.y")
-    for (column in columns.to.remove) combined.datasets[, column] <- NULL
+    ## Remove extra columns?
+
+    #columns.to.remove <- c("id.x", "id.y", "arrival.x", "arrival.y", "origin.x", "origin.y")
+    #for (column in columns.to.remove) combined.datasets[, column] <- NULL
+    ##
+    ## 
+    ## I suggest keeping id, origin and arrival?
+    ##
+    ## OK clean again, since we merged.
+    ##
+    col.names.x <- names(dplyr::select(merged,ends_with(".x")))
+    col.names <- gsub(".x", "", col.names.x)
+    col.names.y <- paste(col.names, ".y", sep = "")
+    
+    merged2 <- merged
+    for (x in 1:length(col.names.x)) {
+        merged2[is.na(merged2[,col.names.x[x]]) == TRUE, col.names.x[x]] <- 
+            merged2[is.na(merged2[,col.names.x[x]]) == TRUE,col.names.y[x]]
+    }
+    
+    ## Removes excess collumnes (.y) since .y is inserted into .x wherever .x was empty.
+    merged2[, col.names.y] <- NULL
+    ##
+    
+    ## change .x to original names
+    colnames(merged2) <- gsub(".x", "", colnames(merged2))
+    
+    combined.datasets <- merged2
     combined.datasets$did.y <- NULL
     return(combined.datasets)
 }

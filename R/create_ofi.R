@@ -83,6 +83,7 @@ create_ofi <- function(data,
     
     ## Return ofi vector
     return (ofi)
+}
 
 check_data_shift <- function(ofi.data) {
     ## Check quality review done variable
@@ -105,7 +106,7 @@ check_data_shift <- function(ofi.data) {
                                        "lång tid till dt","triage på akm","tertiär survey","ok","nej",
                                        "dokumentation","bristande rutin","ok","neurokirurg","dokumetation")
     
-## End new code    
+    ## End new code    
     if (!all(levels.problem.area %in% original.levels.problem.area))
         stop ("Levels in the problem area variable have changed.")
     ## Check mortality review done variable

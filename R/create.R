@@ -2,6 +2,6 @@
 #' 
 #' See [noacsr::create()]
 #' @export
-create <- function(...) {
-    noacsr::create(...)
+create <- function(name) {
+    noacsr::create(name, setup.database.access = TRUE)
 }

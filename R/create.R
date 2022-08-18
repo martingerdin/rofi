@@ -2,6 +2,6 @@
 #' 
 #' See [noacsr::create()]
 #' @export
-create <- function(name) {
-    noacsr::create(name)
+create <- function(...) {
+    noacsr::create(...)
 }

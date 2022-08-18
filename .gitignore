@@ -5,3 +5,4 @@ rofi.Rproj
 /.env
 .Rhistory
 **/*~
+inst/doc

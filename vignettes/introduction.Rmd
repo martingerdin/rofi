@@ -115,4 +115,10 @@ folders also appear there.
   panel). This makes sure that if you've worked on files directly on
   GitHub these edits will be merged with your local files.
 
-  
+## Next steps
+
+Congratulations, you should now be ready to write some project code of
+your own! To get started, read the vignette [Developing with
+rofi](developing.html).
+
+

@@ -1,7 +1,5 @@
 #' Create and Scaffold an Opportunities for Improvement Project
-#' 
-#' See [noacsr::create()]
+#'
+#' @inheritParams noacsr::create
 #' @export
-create <- function(name) {
-    noacsr::create(name, setup.database.access = TRUE)
-}
+create <- noacsr::hijack_function(noacsr::create, setup.database.access = TRUE)

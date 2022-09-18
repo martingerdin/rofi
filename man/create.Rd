@@ -4,8 +4,34 @@
 \alias{create}
 \title{Create and Scaffold an Opportunities for Improvement Project}
 \usage{
-create(name)
+create(
+  name,
+  existing.project = TRUE,
+  open.manuscript = rlang::is_interactive(),
+  setup.database.access = TRUE,
+  verbose = TRUE
+)
+}
+\arguments{
+\item{name}{Character. The name of your project. No default.}
+
+\item{existing.project}{Logical. If TRUE it will check if a
+directory named \code{name} exists in the current working directory
+or if your current working directory is \code{name}, and if so
+create the project in that directory. If FALSE it will abort if
+a directory called \code{name} already exists. Defaults to TRUE.}
+
+\item{open.manuscript}{Logical. If TRUE the file manuscript.Rmd
+created by this function is opened in your current
+editor. Defaults to TRUE.}
+
+\item{setup.database.access}{Logical. If TRUE some additional steps
+are added to the create project process where the user is asked
+to setup database access.}
+
+\item{verbose}{Logical. If TRUE the function reports back when
+important steps have been completed. Defaults to TRUE.}
 }
 \description{
-See \code{\link[noacsr:create]{noacsr::create()}}
+Create and Scaffold an Opportunities for Improvement Project
 }

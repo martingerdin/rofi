@@ -54,16 +54,51 @@ the repository name. Finally, click Create Project.
 
 Now, in the R console, type (assuming the name of your project is `early-interventions-ofi`):
 
-```{r}
+```{r, eval = FALSE}
 devtools::install_github("martingerdin/rofi")
 library(rofi)
 create("early-interventions-ofi")
 ```
 
-When prompted, enter the username and password for database access that you have been sent on email or Slack.
+When prompted, enter the username and password for database access
+that you have been sent on email or Slack.
 
-You should now have multiple new files and directories in your project directory, and RStudio should also have opened the file manuscript.Rmd for you. Start by reading through that file and once you're done, open the file main.R. For now, add the line `library("rofi")` just above the line that says `noacsr::source_all_functions()` and make sure you save. Then go back to your manuscript.Rmd file and click knit, and a new window with the compiled file should pop up.
+You should now have multiple new files and directories in your project
+directory, and RStudio should also have opened the file manuscript.Rmd
+for you. Start by reading through that file and once you're done, open
+the file main.R. For now, add the line `library("rofi")` just above
+the line that says `noacsr::source_all_functions()` and make sure you
+save. Then go back to your manuscript.Rmd file and click knit, and a
+new window with the compiled file should pop up.
 
 ## Pushing your edits from the RStudio environment back to GitHub
 
-Now when you have created all these new files and folders you want to replicate your edits on the server onto GitHub. To do that, click Git in the project panel, its the panel in the upper right corner. Click the tick box under Staged in front of all files and then click Commit. Enter a short description when prompted, for example "Add files and folders" and then click Commit. Hopefully it will succeed and you can then click Close. Click Push to "push" your edits to GitHub. Browse to your GitHub repository to verify that your files and folders also appear there.
+Now when you have created all these new files and folders you want to
+replicate your edits on the server onto GitHub. To do that, click Git
+in the project panel, its the panel in the upper right corner. Click
+the tick box under Staged in front of all files and then click
+Commit. Enter a short description when prompted, for example "Add
+files and folders" and then click Commit. Hopefully it will succeed
+and you can then click Close. Click Push to "push" your edits to
+GitHub. Browse to your GitHub repository to verify that your files and
+folders also appear there.
+
+## Some tips for a smoother development experience
+
+- Do as much work as possible in RStudio, rather than on GitHub. 
+- Commit often, almost as often as you save the files you're working
+  on.
+- Push often, at least several times per session. This makes sure that
+  your "local" edits are synced with your "remote" repository on GitHub.
+- When you sign in to RStudio server to start a new session first pull
+  edits from GitHub (click downward arrow in the rightmost upper
+  panel). This makes sure that if you've worked on files directly on
+  GitHub these edits will be merged with your local files.
+
+## Next steps
+
+Congratulations, you should now be ready to write some project code of
+your own! To get started, read the vignette [Developing with
+rofi](developing.html).
+
+

@@ -74,7 +74,7 @@ the repository name. Finally, click Create Project.
 
 Now, in the R console, type (assuming the name of your project is `early-interventions-ofi`):
 
-```{r}
+```{r, eval = FALSE}
 devtools::install_github("martingerdin/rofi")
 library(rofi)
 create("early-interventions-ofi")

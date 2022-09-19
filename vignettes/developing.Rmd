@@ -37,7 +37,7 @@ to select just a few of all the variables in the complete dataset,
 because you do not need all of them for your particular project. Let's
 say that this function "prepares" the data for further analyses. So:
 
-```{r}
+```{r, eval = FALSE}
 library(rofi)
 create_function("Prepare data")
 ```
@@ -46,7 +46,7 @@ This should create a file called `prepare_data.R` in the directory
 `functions` and open that file in your editor. It should look
 something like this:
 
-```{r, include = FALSE}
+```{r, eval = FALSE}
 #' Prepare Data
 #'
 #' Write a short description of your function here 
@@ -59,7 +59,7 @@ prepare_data <- function(x) {
 }
 ```
 
-Now. Replace `Write a short description of your function here` with a
+Now. Replace "Write a short description of your function here" with a
 short description of what your function does (maybe you wonder what
 the weird "#'" and "@param" and so on comes from. Those are from
 `roxygen`, a way of documenting R code for packages. See
@@ -67,7 +67,7 @@ https://r-pkgs.org/man.html for details). You could for example write
 "Prepare my dataset for analysis by selecting only required
 variables". The file would then look like this:
 
-```{r prepare-1, include = FALSE}
+```{r, eval = FALSE}
 #' Prepare Data
 #'
 #' Prepare my dataset for analysis by selecting only required variables
@@ -77,20 +77,17 @@ prepare_data <- function(x) {
     ## Replace with the contents of your function
     y <- x + 1
     return (y)
-}
-```
-
-```{r, echo = FALSE}
-decorate("prepare-1") %>% flair_lines(3)
+}'
 ```
 
 The "@param" denotes documentation of a single argument, in this case
 called `x`. In this case `x` is a very uninformative argument name, so
 let's rename it to something more informative and intuitive, for
 example `dataset`. Let's also describe this argument, for example "The
-complete dataset":
+complete dataset", and replace `x` in the function definition with
+`dataset`:
 
-```{r prepare-2, include = FALSE}
+```{r, eval = FALSE}
 #' Prepare Data
 #'
 #' Prepare my dataset for analysis by selecting only required variables
@@ -102,3 +99,38 @@ prepare_data <- function(dataset) {
     return (y)
 }
 ```
+
+Finally, let's do something useful with this function, namely
+selecting only the variables that we're going to use and return this
+smaller dataset:
+
+```{r, eval = FALSE}
+#' Prepare Data
+#'
+#' Prepare my dataset for analysis by selecting only required variables
+#' @param dataset The complete dataset.
+#' @export 
+prepare_data <- function(dataset) {
+    variables.to.include <- c("age", "sex", "sbp", "hr", "rr", "niss")
+    prepared.dataset <- dataset[, variables.to.include]
+    return (prepared dataset)
+}
+```
+
+Now that we have this function, let's go ahead and add it to our main
+script. Open the file `main.R` and add this function to where you want
+to use it. For example just after importing your data:
+
+```{r, eval = FALSE}
+## Import data
+data <- import_data(test = TRUE)
+
+## Prepare data
+prepared.data <- prepare_data(data)
+```
+
+Note that if you give your function explicit names the comments are
+quite unnecessary, the function names themselves indicate what the
+functions do, and your main script becomes a roadmap or analysis plan
+showing what happens when, but with the bulk of the code contained in
+functions, kept in separate files.

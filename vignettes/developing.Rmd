@@ -12,7 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
   )
-library(flair)
 ```
 
 Okay, so it is time to start writing some `rofi` code of your own. As

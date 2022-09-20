@@ -55,7 +55,7 @@ the repository name. Finally, click Create Project.
 Now, in the R console, type (assuming the name of your project is `early-interventions-ofi`):
 
 ```{r, eval = FALSE}
-devtools::install_github("martingerdin/rofi")
+devtools::install_github("martingerdin/rofi", build_vignettes = TRUE, build_manual = TRUE)
 library(rofi)
 create("early-interventions-ofi")
 ```
@@ -98,7 +98,14 @@ folders also appear there.
 ## Next steps
 
 Congratulations, you should now be ready to write some project code of
-your own! To get started, read the vignette [Developing with
-rofi](developing.html).
+your own! To get started, read the vignette "Developing with
+rofi". To see all vignettes in this package, run:
 
+```{r, eval = FALSE}
+browseVignettes("rofi")
+```
 
+And to open a specific vignette, run:
+
+```{r, eval = FALSE}
+vignette("developing", "rofi")

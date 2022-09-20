@@ -2,7 +2,7 @@
 title: "Developing with rofi"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{developing}
+  %\VignetteIndexEntry{Developing with rofi}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

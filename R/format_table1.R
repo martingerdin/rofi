@@ -75,12 +75,12 @@ format_table1 <- function(data) {
                "Intubation/surgical airway without medication",
                "Supraglottic airway without medication")) 
   
-  #  #  "ed_intubated" - ihopslagen med pre intub i var intub 
-  #  dpc$ed_intubated <- factor(
-  #    dpc$ed_intubated,
-  #    levels = c(1, 2), 
-  #    labels = c("Yes",
-  #               "No"))
+    #  "ed_intubated" - ihopslagen med pre intub i var intub 
+    dpc$ed_intubated <- factor(
+      dpc$ed_intubated,
+      levels = c(1, 2), 
+      labels = c("Yes",
+                 "No"))
   
   # "pre_intub_type" 
   dpc$pre_intub_type <- factor(
@@ -92,11 +92,11 @@ format_table1 <- function(data) {
                "Supraglottic airway without medication"))  
   
   #  #  "pre_intubated" ihopslagning med i var intub
-  #  dpc$pre_intubated <- factor(
-  #    dpc$pre_intubated,
-  #    levels = c(1, 2), 
-  #    labels = c("Yes",
-  #               "No"))  
+    dpc$pre_intubated <- factor(
+      dpc$pre_intubated,
+      levels = c(1, 2), 
+      labels = c("Yes",
+                 "No"))  
   
   # "pre_provided"
   dpc$pre_provided <- factor(

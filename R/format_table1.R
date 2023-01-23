@@ -1,6 +1,7 @@
 format_table1 <- function(data) {
   
   dpc <- data
+  dpc$intub <- with(dpc, ifelse(`pre_intubated` == 1 & is.na(dpc$pre_intubated) == FALSE, 3, `ed_intubated`))  
   #####################################
   # Change factors to readable names ##
   #####################################

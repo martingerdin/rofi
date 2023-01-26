@@ -10,12 +10,17 @@
 #'     include the variables "Ankomst_te", "Personnummer", and
 #'     "Reservnummer".
 #' @export
-merge_data <- function(datasets) {
+merge_data <- function(datasets , test = FALSE) {
     ## Ideally all "checks" below should be refactored as tests
     
     ## Check arguments
     assertthat::assert_that(is.list(datasets))
-    dataset.names <- c("swetrau", "fmp", "atgarder", "problem", "kvalgranskning2014.2017")
+    if (test == TRUE) {
+        dataset.names <- c("swetrau_scrambled", "fmp_scrambled", "atgarder_scrambled", "problem_scrambled", "kvalgranskning2014.2017_scrambled")
+    } else {
+        dataset.names <- c("swetrau", "fmp", "atgarder", "problem", "kvalgranskning2014.2017")
+    }
+    
     assertthat::assert_that(all(dataset.names %in% names(datasets)))
 
     ## First merge old review data with swetrau

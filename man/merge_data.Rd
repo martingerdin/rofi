@@ -4,7 +4,7 @@
 \alias{merge_data}
 \title{Merge data}
 \usage{
-merge_data(datasets)
+merge_data(datasets, test = FALSE)
 }
 \arguments{
 \item{datasets}{A list of data.frames. Has to include the datasets

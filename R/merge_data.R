@@ -41,31 +41,56 @@ merge_data <- function(datasets , test = FALSE) {
         fmp.data = datasets$fmp,
         problem.data = datasets$problem
     )
+
+    ## Merge latest data with these merged files
+    fmp.20210602.20230228 <- datasets$fmp.20210602.20230228
+    fmp.20210602.20230228$id <- fmp.20210602.20230228$Personnummer
+    fmp.20210602.20230228$id[is.na(fmp.20210602.20230228$id)] <- fmp.20210602.20230228$Reservnummer[is.na(fmp.20210602.20230228$Personnummer)]
+    fmp.20210602.20230228$arrival <- as.Date(strptime(fmp.20210602.20230228$Ankomst_te, format = "%Y%m%d %H:%M"))
+    fmp.20210602.20230228$did <- paste(fmp.20210602.20230228$id, fmp.20210602.20230228$arrival)
+
+    ## Remove variables not needed for merging
+    fmp.and.problem$Död.datum <- NULL
+    fmp.20210602.20230228$Död.datum <- NULL
+
+    ## Merge
+    fmp <- dplyr::bind_rows(fmp.and.problem, fmp.20210602.20230228)
     
-    
-    merged.swetrau.fmp.problem <- merge(merged, fmp.problem, by = "did", all.x = TRUE)
+    ## And now merge the SweTrau datasets
+    swetrau.20210602.20230228 <- datasets$swetrau.20210602.20230228
+    swetrau.20210602.20230228$id <- swetrau.20210602.20230228$PersonIdentity
+    swetrau.20210602.20230228$id[is.na(swetrau.20210602.20230228$id)] <- swetrau.20210602.20230228$TempIdentity[is.na(swetrau.20210602.20230228$PersonIdentity)]
+    swetrau.20210602.20230228$did <- paste(swetrau.20210602.20230228$id, as.Date(strptime(swetrau.20210602.20230228$DateTime_ArrivalAtHospital, format = "%Y-%m-%d %H:%M")))
+    old.review.data.and.swetrau$Fr1.5 <- as.character(old.review.data.and.swetrau$Fr1.5)
+    old.review.data.and.swetrau$Fr1.15 <- as.character(old.review.data.and.swetrau$Fr1.15)
+    icd.ais.index <- grep("^ICD_|^AISCode_", names(old.review.data.and.swetrau))
+    old.review.data.and.swetrau[icd.ais.index] <- lapply(old.review.data.and.swetrau[icd.ais.index], as.character)
+    swetrau <- dplyr::bind_rows(old.review.data.and.swetrau, swetrau.20210602.20230228)
+
+    ## Merge FMP and SweTrau data
+    merged.swetrau.fmp.problem <- merge(swetrau, fmp, by = "did", all.x = TRUE)
 
     ## Check how many from swetrau that were not matched in fmp.problem
     ## sum(is.na(merged.swetrau.fmp.problem$origin.y)) ## 264 cases from SweTrau are not in fmp.problem
-    not.in.fmp.problem <- merged[!(merged$did %in% fmp.problem$did), c("did", "did", "id", "PersonIdentity", "TempIdentity", "Gender", "DateTime_ArrivalAtHospital", "arrival")]
-    ## nrow(not.in.fmp.problem)
-    ## to.keep <- apply(not.in.fmp.problem, 1, function(case) {
-    ##     matching.cases <- fmp.problem[fmp.problem$id == case["id.x"], ]
-    ##     if (nrow(matching.cases) > 0) {
-    ##         print(case)
-    ##         cat("\n")
-    ##         print(matching.cases)
-    ##         message("Keep? (Enter index and Enter or just Enter to discard)")
-    ##         row.to.keep <- as.numeric(readLines(n = 1))
-    ##         if (!is.na(row.to.keep)) {
-    ##             return(matching.cases[row.to.keep, ])
-    ##         } else {
-    ##             return(NULL)
-    ##         }
-    ##     } else {
-    ##         return(NULL)
-    ##     }
-    ## })
+    not.in.fmp <- swetrau[!(swetrau$did %in% fmp$did), c("did", "did", "id", "PersonIdentity", "TempIdentity", "Gender", "DateTime_ArrivalAtHospital", "arrival")]
+    nrow(not.in.fmp)
+    to.keep <- apply(not.in.fmp, 1, function(case) {
+        matching.cases <- fmp[fmp$id == case["id"], ]
+        if (nrow(matching.cases) > 0) {
+            print(case)
+            cat("\n")
+            print(matching.cases)
+            message("Keep? (Enter index and Enter or just Enter to discard)")
+            row.to.keep <- as.numeric(readLines(n = 1))
+            if (!is.na(row.to.keep)) {
+                return(matching.cases[row.to.keep, ])
+            } else {
+                return(NULL)
+            }
+        } else {
+            return(NULL)
+        }
+    })
 
     ## In most cases where there is a match on personal number or
     ## temporary number but not on did the date is wrong, for example the

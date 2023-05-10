@@ -68,29 +68,29 @@ merge_data <- function(datasets , test = FALSE) {
     swetrau <- dplyr::bind_rows(old.review.data.and.swetrau, swetrau.20210602.20230228)
 
     ## Merge FMP and SweTrau data
-    merged.swetrau.fmp.problem <- merge(swetrau, fmp, by = "did", all.x = TRUE)
+    merged.swetrau.fmp <- merge(swetrau, fmp, by = "did", all.x = TRUE)
 
     ## Check how many from swetrau that were not matched in fmp.problem
     ## sum(is.na(merged.swetrau.fmp.problem$origin.y)) ## 264 cases from SweTrau are not in fmp.problem
     not.in.fmp <- swetrau[!(swetrau$did %in% fmp$did), c("did", "did", "id", "PersonIdentity", "TempIdentity", "Gender", "DateTime_ArrivalAtHospital", "arrival")]
-    nrow(not.in.fmp)
-    to.keep <- apply(not.in.fmp, 1, function(case) {
-        matching.cases <- fmp[fmp$id == case["id"], ]
-        if (nrow(matching.cases) > 0) {
-            print(case)
-            cat("\n")
-            print(matching.cases)
-            message("Keep? (Enter index and Enter or just Enter to discard)")
-            row.to.keep <- as.numeric(readLines(n = 1))
-            if (!is.na(row.to.keep)) {
-                return(matching.cases[row.to.keep, ])
-            } else {
-                return(NULL)
-            }
-        } else {
-            return(NULL)
-        }
-    })
+    ## nrow(not.in.fmp)
+    ## to.keep <- apply(not.in.fmp, 1, function(case) {
+    ##     matching.cases <- fmp[fmp$id == case["id"], ]
+    ##     if (nrow(matching.cases) > 0) {
+    ##         print(case)
+    ##         cat("\n")
+    ##         print(matching.cases)
+    ##         message("Keep? (Enter index and Enter or just Enter to discard)")
+    ##         row.to.keep <- as.numeric(readLines(n = 1))
+    ##         if (!is.na(row.to.keep)) {
+    ##             return(matching.cases[row.to.keep, ])
+    ##         } else {
+    ##             return(NULL)
+    ##         }
+    ##     } else {
+    ##         return(NULL)
+    ##     }
+    ## })
 
     ## In most cases where there is a match on personal number or
     ## temporary number but not on did the date is wrong, for example the
@@ -103,15 +103,15 @@ merge_data <- function(datasets , test = FALSE) {
     ## fmp.problem.rows <- as.numeric(sapply(to.keep, function(x) row.names(x)))
 
     ## Vectors were obtained with dput
-    fmp.problem.rows <- c(1423, 2825, 9073, 11624, 11583, 11749, 11880, 11881, 11913, 11967)
+    fmp.rows <- c(8841, 2825, 9068, 11603, 11565, 11727, 11858, 11859, 11891, 11945)
     swetrau.rows <- c(1571, 2854, 8962, 11387, 11388, 11578, 11670, 11671, 11691, 11764)
-    fmp.problem[fmp.problem.rows, "did"] <- merged[swetrau.rows, "did"]
+    fmp[fmp.rows, "did"] <- swetrau[swetrau.rows, "did"]
 
     ## Redo merge
-    merged.swetrau.fmp.problem <- merge(merged, fmp.problem, by = "did", all.x = TRUE)
+    merged.swetrau.fmp <- merge(swetrau, fmp, by = "did", all.x = TRUE)
     ## sum(is.na(merged.swetrau.fmp.problem$origin.y)) ## 262 cases are still missing from swetrau in fmp.problem
 
-    merged <- merged.swetrau.fmp.problem
+    merged <- merged.swetrau.fmp
 
     ##
     ## Combine ID:S

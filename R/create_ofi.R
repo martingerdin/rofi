@@ -104,7 +104,9 @@ check_data_shift <- function(ofi.data) {
                                        "kompetens brist","inget problemområde","föredömligt handlagd",
                                        "kommunikation","handläggning/logistik","traumakriterier/styrning",
                                        "lång tid till dt","triage på akm","tertiär survey","ok","nej",
-                                       "dokumentation","bristande rutin","ok","neurokirurg","dokumetation")
+                                       "dokumentation","bristande rutin","ok","neurokirurg","dokumetation",
+                                       "handläggning\r\ndokumentation","annat", "vårdnivå+\r\nmissade skador",
+                                       "kommunikation+missad skada", "handläggning prehosp")
     
     ## End new code    
     if (!all(levels.problem.area %in% original.levels.problem.area))

@@ -19,7 +19,8 @@ Imports:
     usethis,
     rmarkdown,
     noacsr,
-    dplyr
+    dplyr,
+    labelled
 Depends: 
     R (>= 2.10)
 Suggests: 

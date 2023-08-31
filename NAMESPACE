@@ -2,7 +2,11 @@
 
 export(create)
 export(create_function)
+export(create_intub)
 export(create_ofi)
+export(get_default_variables_to_be_included)
 export(import_data)
+export(label_data)
 export(merge_data)
+export(prepare_data)
 importFrom(noacsr,create_function)

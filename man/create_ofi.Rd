@@ -9,7 +9,8 @@ create_ofi(
   quality.review.done = "VK_avslutad",
   problem.area = "Problemomrade_.FMP",
   mortality.review.done = "tra_DodsfallsanalysGenomford",
-  preventable.death = "Fr1.14"
+  preventable.death = "Fr1.14",
+  include.preventable.death = TRUE
 )
 }
 \arguments{
@@ -35,6 +36,9 @@ has been completed. Defaults to "tra_DodsfallsanalysGenomford".}
 death variable, which indicates if a death was prevantable,
 potentially proventable, and not preventable. Defaults to
 "Fr1.14".}
+
+\item{include.preventable.death}{Logical. Should preventable death
+count as an opportunity for improvement? Defaults to TRUE.}
 }
 \description{
 Create opportunities for improvement variable, which is either yes

@@ -1,5 +1,24 @@
+To get started, run:
+
 ```{r}
 library(devtools)
 load_all()
 test()
+```
+
+Typical workflow. To avoid having to set the test parameter manually you can set it as an environmental variable, in .env.
+
+```{r}
+test <- Sys.getenv("ENV") == "test"
+imported.data <- import_data(test = test)
+data <- merge_data(imported.data, test = test)
+prepared.data <- prepare_data(data)
+```
+
+Compare opportunities for improvement with preventable death included versus not including preventable deaths.
+
+```{r}
+data$ofi.withouth.preventable.death <- create_ofi(data, include.preventable.death = FALSE)
+table(data$ofi)
+table(data$ofi.withouth.preventable.death)
 ```

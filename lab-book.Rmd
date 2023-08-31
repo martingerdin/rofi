@@ -1,0 +1,5 @@
+```{r}
+library(devtools)
+load_all()
+test()
+```

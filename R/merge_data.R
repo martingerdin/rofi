@@ -10,7 +10,7 @@
 #'     include the variables "Ankomst_te", "Personnummer", and
 #'     "Reservnummer".
 #' @export
-merge_data <- function(datasets , test = FALSE) {
+merge_data <- function(datasets, test = FALSE) {
     ## Ideally all "checks" below should be refactored as tests
     
     ## Check arguments

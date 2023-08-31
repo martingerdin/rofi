@@ -1,6 +1,8 @@
 ---
 title: "Introduction to `rofi`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette: default
+  rmarkdown::pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Introduction to rofi}
   %\VignetteEngine{knitr::rmarkdown}

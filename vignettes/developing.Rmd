@@ -1,5 +1,5 @@
 ---
-title: "Developing with rofi"
+title: "Getting started with rofi"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Developing with rofi}
@@ -19,6 +19,36 @@ previously mentioned, `rofi` is quite opinionated about directory
 structure and coding style that should make it easier for those just
 starting out to do just that, get started. 
 
+In your working directory, there should be a file called `main.R`. If
+there is no such file, please create it, for example using
+`file.create("./main.R")`. This file structures the rest of the
+code. Think of it as a table of contents, a file that anyone should be
+able to read and quickly get an idea about the steps required to get
+to the end result.
+
+There might be some code in your `main.R` already, but consider
+revising it to look like this:
+
+```{r, eval = FALSE}
+## Load packages
+library(rofi)
+
+## Import data
+imported.data <- import_data()
+
+## Merge data
+data <- merge_data(imported.data)
+
+## Prepare data
+prepared.data <- prepare_data(data)
+```
+
+Now, `import_data`, `merge_data` and `prepare_data` are all functions
+that are specific to the `rofi` package. They do things with the
+data. If you want to understand what a particular function does, you
+can use `?rofi::merge_data`. This will open the documentation for the
+`merge_data` function.
+
 We believe that R code is best expressed in functions. A function is
 basically a reusable piece of code, that uses some input (provided in
 the form of arguments) to produce some output. Often, functions also
@@ -33,25 +63,23 @@ persons to work together on the same codebase.
 
 So, let's create your first function. At some point you probably want
 to select just a few of all the variables in the complete dataset,
-because you do not need all of them for your particular project. Let's
-say that this function "prepares" the data for further analyses. So:
+because you do not need all of them for your particular project. So:
 
 ```{r, eval = FALSE}
-library(rofi)
-create_function("Prepare data")
+create_function("Select variables")
 ```
 
-This should create a file called `prepare_data.R` in the directory
+This should create a file called `select_variables.R` in the directory
 `functions` and open that file in your editor. It should look
 something like this:
 
 ```{r, eval = FALSE}
-#' Prepare Data
+#' Select Variables
 #'
 #' Write a short description of your function here 
 #' @param x Describe argument x here 
 #' @export 
-prepare_data <- function(x) {
+select_variables <- function(x) {
     ## Replace with the contents of your function
     y <- x + 1
     return (y)
@@ -63,13 +91,13 @@ short description of what your function does (maybe you wonder what
 the weird "#'" and "@param" and so on comes from. Those are from
 `roxygen`, a way of documenting R code for packages. See
 https://r-pkgs.org/man.html for details). You could for example write
-"Prepare my dataset for analysis by selecting only required
-variables". The file would then look like this:
+"Select only the variables I need for my analysis". The file would
+then look like this:
 
 ```{r, eval = FALSE}
-#' Prepare Data
+#' Select Variables
 #'
-#' Prepare my dataset for analysis by selecting only required variables
+#' Select only the variables I need for my analysis
 #' @param x Describe argument x here 
 #' @export 
 prepare_data <- function(x) {
@@ -87,9 +115,9 @@ complete dataset", and replace `x` in the function definition with
 `dataset`:
 
 ```{r, eval = FALSE}
-#' Prepare Data
+#' Select Variables
 #'
-#' Prepare my dataset for analysis by selecting only required variables
+#' Select only the variables I need for my analysis
 #' @param dataset The complete dataset.
 #' @export 
 prepare_data <- function(dataset) {
@@ -104,15 +132,15 @@ selecting only the variables that we're going to use and return this
 smaller dataset:
 
 ```{r, eval = FALSE}
-#' Prepare Data
+#' Select Variables
 #'
-#' Prepare my dataset for analysis by selecting only required variables
+#' Select only the variables I need for my analysis
 #' @param dataset The complete dataset.
 #' @export 
 prepare_data <- function(dataset) {
-    variables.to.include <- c("age", "sex", "sbp", "hr", "rr", "niss")
+    variables.to.include <- c("pt_Gender", "pt_age_yrs", "ed_sbp_value", "ed_rr_value", "ed_gcs_sum", "NISS")
     prepared.dataset <- dataset[, variables.to.include]
-    return (prepared dataset)
+    return (prepared.dataset)
 }
 ```
 
@@ -121,11 +149,20 @@ script. Open the file `main.R` and add this function to where you want
 to use it. For example just after importing your data:
 
 ```{r, eval = FALSE}
+## Load packages
+library(rofi)
+
 ## Import data
-data <- import_data(test = TRUE)
+imported.data <- import_data()
+
+## Merge data
+data <- merge_data(imported.data)
 
 ## Prepare data
 prepared.data <- prepare_data(data)
+
+## Select only variables required for the analysis
+selected.data <- select_variables(prepared.data)
 ```
 
 Note that if you give your function explicit names the comments are

@@ -21,99 +21,165 @@ library(rofi)
 # Getting started
 
 `rofi` is a R package to help structure and streamline "Opportunities
-for improvement" (OFI) research projects using data from the Karolinska
-University Hospital trauma registry and trauma care quality
-database. 
+for improvement" (OFI) research projects using data from the
+Karolinska University Hospital trauma registry and trauma care
+quality. `rofi` is quite opinionated about directory structure and
+coding style that should make it easier for those just starting out to
+do just that, get started.  database.
 
-This document will get you started with your OFI project and is more
-than an introduction to the R package. So, this document will guide
-you through the following steps:
+Let's start writing some `rofi` code of your own. 
 
-1. Setting up a GitHub project
-2. Signing in to our RStudio test server
-3. Importing your GitHub project into the RStudio environment
-4. Creating your OFI project using `rofi`
-5. Pushing your edits from the RStudio environment back to GitHub
+In your working directory, there should be a file called `main.R`. If
+there is no such file, please create it, for example using
+`file.create("./main.R")`. This file structures the rest of the
+code. Think of it as a table of contents, a file that anyone should be
+able to read and quickly get an idea about the steps required to get
+to the end result.
 
-## Setting up a GitHub project
-
-Before you do anything else, please sign up for a [GitHub
-account](https://github.com). Create a new, empty, public repository
-by following [GitHub's own
-guide](https://docs.github.com/en/get-started/quickstart/create-a-repo).
-Please use a short project name, for example if your project is about
-how early interventions are associated with opportunities for
-improvement, use `early-interventions-ofi` as the repository name. **Do
-not initialize your repository with a README**.
-
-## Signing in to our RStudio test server
-
-Once you have created your GitHub repository, browse to our [RStudio
-test server](https://rstudio.test.noacs.io) and sign in with the
-credentials sent to you over email or Slack.
-
-## Importing your GitHub project into the RStudio environment
-
-Once logged in to RStudio server you will need to setup a way to
-access GitHub. We recommend using a so called SSH key to do
-this. Click Tools > Global Options... > Git/SVN > Create RSA key. You
-can leave the Passphrase blank. Click Create > Close. Click View
-public key and copy the key to the clipboard. [Then follow GitHub's
-guide on how to add a SSH key to your
-account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
-
-Once you have added the SSH key to your GitHub account click File >
-New Project > Version Control > Git. You will now need to enter the
-SSH version of your repository url, which you find if you browse to
-your GitHub repository, click the green button Code and select
-SSH. Copy the url that starts with git@github.com and paste it into
-Repository url. Then enter the directory name, typically the same as
-the repository name. Finally, click Create Project.
-
-## Creating your OFI project using `rofi`
-
-Now, in the R console, type (assuming the name of your project is `early-interventions-ofi`):
+There might be some code in your `main.R` already, but consider
+revising it to look like this:
 
 ```{r, eval = FALSE}
-devtools::install_github("martingerdin/rofi", build_vignettes = TRUE, build_manual = TRUE)
+## Load packages
 library(rofi)
-create("early-interventions-ofi")
+
+## Import data
+imported.data <- import_data()
+
+## Merge data
+data <- merge_data(imported.data)
+
+## Prepare data
+prepared.data <- prepare_data(data)
 ```
 
-When prompted, enter the username and password for database access
-that you have been sent on email or Slack.
+Now, `import_data`, `merge_data` and `prepare_data` are all functions
+that are specific to the `rofi` package. They do things with the
+data. If you want to understand what a particular function does, you
+can use `?rofi::merge_data`. This will open the documentation for the
+`merge_data` function.
 
-You should now have multiple new files and directories in your project
-directory, and RStudio should also have opened the file manuscript.Rmd
-for you. Start by reading through that file and once you're done, open
-the file main.R. For now, add the line `library("rofi")` just above
-the line that says `noacsr::source_all_functions()` and make sure you
-save. Then go back to your manuscript.Rmd file and click knit, and a
-new window with the compiled file should pop up.
+We believe that R code is best expressed in functions. A function is
+basically a reusable piece of code, that uses some input (provided in
+the form of arguments) to produce some output. Often, functions also
+work in isolation and without side effects, meaning that whatever
+happens inside a function does not affect the environment outside of
+that function. 
 
-## Pushing your edits from the RStudio environment back to GitHub
+We think that there should be one function per file (with few
+exceptions, for example if you want to collect many very short and
+related functions in one file). This style makes it easier for several
+persons to work together on the same codebase.
 
-Now when you have created all these new files and folders you want to
-replicate your edits on the server onto GitHub. To do that, click Git
-in the project panel, its the panel in the upper right corner. Click
-the tick box under Staged in front of all files and then click
-Commit. Enter a short description when prompted, for example "Add
-files and folders" and then click Commit. Hopefully it will succeed
-and you can then click Close. Click Push to "push" your edits to
-GitHub. Browse to your GitHub repository to verify that your files and
-folders also appear there.
+So, let's create your first function. At some point you probably want
+to select just a few of all the variables in the complete dataset,
+because you do not need all of them for your particular project. So:
 
-## Some tips for a smoother development experience
+```{r, eval = FALSE}
+create_function("Select variables")
+```
 
-- Do as much work as possible in RStudio, rather than on GitHub. 
-- Commit often, almost as often as you save the files you're working
-  on.
-- Push often, at least several times per session. This makes sure that
-  your "local" edits are synced with your "remote" repository on GitHub.
-- When you sign in to RStudio server to start a new session first pull
-  edits from GitHub (click downward arrow in the rightmost upper
-  panel). This makes sure that if you've worked on files directly on
-  GitHub these edits will be merged with your local files.
+This should create a file called `select_variables.R` in the directory
+`functions` and open that file in your editor. It should look
+something like this:
+
+```{r, eval = FALSE}
+#' Select Variables
+#'
+#' Write a short description of your function here 
+#' @param x Describe argument x here 
+#' @export 
+select_variables <- function(x) {
+    ## Replace with the contents of your function
+    y <- x + 1
+    return (y)
+}
+```
+
+Now. Replace "Write a short description of your function here" with a
+short description of what your function does (maybe you wonder what
+the weird "#'" and "@param" and so on comes from. Those are from
+`roxygen`, a way of documenting R code for packages. See
+https://r-pkgs.org/man.html for details). You could for example write
+"Select only the variables I need for my analysis". The file would
+then look like this:
+
+```{r, eval = FALSE}
+#' Select Variables
+#'
+#' Select only the variables I need for my analysis
+#' @param x Describe argument x here 
+#' @export 
+prepare_data <- function(x) {
+    ## Replace with the contents of your function
+    y <- x + 1
+    return (y)
+}'
+```
+
+The "@param" denotes documentation of a single argument, in this case
+called `x`. In this case `x` is a very uninformative argument name, so
+let's rename it to something more informative and intuitive, for
+example `dataset`. Let's also describe this argument, for example "The
+complete dataset", and replace `x` in the function definition with
+`dataset`:
+
+```{r, eval = FALSE}
+#' Select Variables
+#'
+#' Select only the variables I need for my analysis
+#' @param dataset The complete dataset.
+#' @export 
+prepare_data <- function(dataset) {
+    ## Replace with the contents of your function
+    y <- x + 1
+    return (y)
+}
+```
+
+Finally, let's do something useful with this function, namely
+selecting only the variables that we're going to use and return this
+smaller dataset:
+
+```{r, eval = FALSE}
+#' Select Variables
+#'
+#' Select only the variables I need for my analysis
+#' @param dataset The complete dataset.
+#' @export 
+prepare_data <- function(dataset) {
+    variables.to.include <- c("pt_Gender", "pt_age_yrs", "ed_sbp_value", "ed_rr_value", "ed_gcs_sum", "NISS")
+    prepared.dataset <- dataset[, variables.to.include]
+    return (prepared.dataset)
+}
+```
+
+Now that we have this function, let's go ahead and add it to our main
+script. Open the file `main.R` and add this function to where you want
+to use it. For example just after importing your data:
+
+```{r, eval = FALSE}
+## Load packages
+library(rofi)
+
+## Import data
+imported.data <- import_data()
+
+## Merge data
+data <- merge_data(imported.data)
+
+## Prepare data
+prepared.data <- prepare_data(data)
+
+## Select only variables required for the analysis
+selected.data <- select_variables(prepared.data)
+```
+
+Note that if you give your function explicit names the comments are
+quite unnecessary, the function names themselves indicate what the
+functions do, and your main script becomes a roadmap or analysis plan
+showing what happens when, but with the bulk of the code contained in
+functions, kept in separate files.
 
 ## Next steps
 

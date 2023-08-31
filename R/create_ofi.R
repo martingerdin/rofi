@@ -34,12 +34,15 @@
 #'     death variable, which indicates if a death was prevantable,
 #'     potentially proventable, and not preventable. Defaults to
 #'     "Fr1.14".
+#' @param include.preventable.death Logical. Should preventable death
+#'     count as an opportunity for improvement? Defaults to TRUE.
 #' @export
 create_ofi <- function(data,
                        quality.review.done = "VK_avslutad",
                        problem.area = "Problemomrade_.FMP",
                        mortality.review.done = "tra_DodsfallsanalysGenomford",
-                       preventable.death = "Fr1.14") {
+                       preventable.death = "Fr1.14",
+                       include.preventable.death = TRUE) {
     ## Check arguments
     assertthat::assert_that(is.data.frame(data))
     variable.names <- c(quality.review.done = quality.review.done,
@@ -48,6 +51,7 @@ create_ofi <- function(data,
                         preventable.death = preventable.death)
     for (variable.name in variable.names) assertthat::assert_that(is.character(variable.name) & length(variable.name) == 1)
     assertthat::assert_that(all(variable.names %in% names(data)))
+    assertthat::assert_that(is.logical(include.preventable.death) & length(include.preventable.death) == 1)
 
     ## Check for data shift, i.e. that input data has changed since
     ## this code was written
@@ -70,13 +74,16 @@ create_ofi <- function(data,
     ############
     ofi[with(ofi.data, problem.area != "ok" & problem.area != "föredömligt handlagd" 
              & problem.area != "inget problemområde" & problem.area != "nej")] <- TRUE
-    ## If the death is preventable or potentially prevantable then
-    ## there is an opportunity for improvement
-    ofi[with(ofi.data, preventable.death == "2" | preventable.death == "3")] <- TRUE
-    ## If the preventability is unknown then it is unknown if there is
-    ## an opportunity for improvement, unless there is an opportunity
-    ## for improvement according to the quality review
-    ofi[ofi.data$preventable.death == 999 & ofi == FALSE] <- NA
+
+    if (include.preventable.death) {
+        ## If the death is preventable or potentially prevantable then
+        ## there is an opportunity for improvement
+        ofi[with(ofi.data, preventable.death == "2" | preventable.death == "3")] <- TRUE
+        ## If the preventability is unknown then it is unknown if there is
+        ## an opportunity for improvement, unless there is an opportunity
+        ## for improvement according to the quality review
+        ofi[ofi.data$preventable.death == 999 & ofi == FALSE] <- NA
+    }
     
     ## Make ofi character
     ofi <- ifelse(ofi, "Yes", "No")
@@ -92,13 +99,10 @@ check_data_shift <- function(ofi.data) {
     original.levels.quality.review.done <- c("ja", NA, "nej")
     if (!all(levels.quality.review.done %in% original.levels.quality.review.done))
         stop ("Levels in the quality review done variable have changed.")
+
     ## Check problem area variable
     ofi.data$problem.area <- tolower(as.character(ofi.data$ problem.area))
     levels.problem.area <- unique(ofi.data$problem.area)
-    ############
-    # New code #
-    ############
-    
     original.levels.problem.area  <- c(NA,"ok","triage på akutmottagningen","vårdnivå","handläggning",
                                        "logistik/teknik","resurs","missad skada","lång tid till op",
                                        "kompetens brist","inget problemområde","föredömligt handlagd",
@@ -107,21 +111,22 @@ check_data_shift <- function(ofi.data) {
                                        "dokumentation","bristande rutin","ok","neurokirurg","dokumetation",
                                        "handläggning\r\ndokumentation","annat", "vårdnivå+\r\nmissade skador",
                                        "kommunikation+missad skada", "handläggning prehosp")
-    
-    ## End new code    
     if (!all(levels.problem.area %in% original.levels.problem.area))
         stop ("Levels in the problem area variable have changed.")
+
     ## Check mortality review done variable
     ofi.data$mortality.review.done <- tolower(as.character(ofi.data$mortality.review.done))
     levels.mortality.review.done <- unique(ofi.data$mortality.review.done)
     original.levels.mortality.review.done <- c(NA, 2, 1)
     if (!all(levels.quality.review.done %in% original.levels.quality.review.done))
         stop ("Levels in the mortality review done variable have changed.")
+
     ## Check preventable death variable
     levels.preventable.death <- unique(ofi.data$preventable.death)
     original.levels.preventable.death <- c(NA, "1", "3", "2", "999")
     if (!all(levels.preventable.death %in% original.levels.preventable.death))
         stop ("Levels in the preventable death variable have changed.")
+
     ## Return data
     return (ofi.data)
 }

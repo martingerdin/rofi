@@ -26,7 +26,7 @@ for improvement" (OFI) research projects using data from the
 Karolinska University Hospital trauma registry and trauma care
 quality. `rofi` is quite opinionated about directory structure and
 coding style that should make it easier for those just starting out to
-do just that, get started.  database.
+do just that, get started. 
 
 Let's start writing some `rofi` code of your own. 
 

@@ -22,3 +22,10 @@ data$ofi.withouth.preventable.death <- create_ofi(data, include.preventable.deat
 table(data$ofi)
 table(data$ofi.withouth.preventable.death)
 ```
+
+Generate pdf vignette.
+
+```{r}
+rmarkdown::render("./vignettes/introduction.Rmd", output_format = "pdf_document")
+system("mv ./vignettes/introduction.pdf ./doc/introduction.pdf")
+```

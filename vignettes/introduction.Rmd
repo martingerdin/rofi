@@ -184,8 +184,7 @@ functions, kept in separate files.
 ## Next steps
 
 Congratulations, you should now be ready to write some project code of
-your own! To get started, read the vignette "Developing with
-rofi". To see all vignettes in this package, run:
+your own! To see all vignettes in this package, run:
 
 ```{r, eval = FALSE}
 browseVignettes("rofi")
@@ -194,7 +193,6 @@ browseVignettes("rofi")
 And to open a specific vignette, run:
 
 ```{r, eval = FALSE}
-vignette("developing", "rofi")
+vignette("introduction", "rofi")
 ```
-
 

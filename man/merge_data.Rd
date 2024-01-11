@@ -14,6 +14,9 @@ the variables "DateTime_ArrivalAtHospital", "PersonIdentity",
 and "TempIdentity". The datasets "fmp" and "problem" have to
 include the variables "Ankomst_te", "Personnummer", and
 "Reservnummer".}
+
+\item{test}{Logical. If TRUE the function assumes that datasets
+are from the scrambled data. Defaults to FALSE.}
 }
 \description{
 Merges the different opportunities for improvement datasets into a

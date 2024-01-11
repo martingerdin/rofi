@@ -9,6 +9,8 @@
 #'     and "TempIdentity". The datasets "fmp" and "problem" have to
 #'     include the variables "Ankomst_te", "Personnummer", and
 #'     "Reservnummer".
+#' @param test Logical. If TRUE the function assumes that datasets 
+#'     are from the scrambled data. Defaults to FALSE.
 #' @export
 merge_data <- function(datasets, test = FALSE) {
     ## Ideally all "checks" below should be refactored as tests

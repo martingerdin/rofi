@@ -1,0 +1,123 @@
+#' Create detailed OFI categories
+#'
+#' This function creates detailed Opportunities for Improvement (OFI) categories
+#' based on the 'Problemomrade_.FMP' column in the input data.
+#'
+#' @param data A data frame containing the 'Problemomrade_.FMP' column
+#' @return A character vector of detailed OFI categories
+#' @throws If input is not a data frame, if required column is missing, or if column is not of character type
+create_detailed_ofi_categories <- function(data) {
+  # Check if data is a data frame
+  if (!is.data.frame(data)) {
+    stop("Input must be a data frame")
+  }
+  
+  # Check if the required column exists
+  if (!"Problemomrade_.FMP" %in% colnames(data)) {
+    stop("Column 'Problemomrade_.FMP' not found in the data")
+  }
+  
+  # Check if the column is of character type
+  if (!is.character(data$Problemomrade_.FMP)) {
+    stop("Column 'Problemomrade_.FMP' must be of character type")
+  }
+  
+  # Define the expected unique values
+  expected.values <- c(
+    "ok", "nej", "inget problemområde", "föredömligt handlagd", "dokumetation",
+    "handläggning", "logistik/teknik", "lång tid till op", "lång tid till dt",
+    "kompetens brist", "kommunikation", "kommunikation+missad skada",
+    "handläggning/logistik", "handläggning+dokumentation", "handläggning prehosp",
+    "traumakriterier/styrning", "tertiär survey", "bristande rutin", "annat",
+    "missad skada", "resurs", "triage på akm", "triage på akutmottagningen",
+    "vårdnivå", "vårdnivå+\r\nmissade skador", "handläggning\r\ndokumentation"
+  )
+  
+  # Check if all unique values in the data are in the expected values
+  actual.values <- unique(data$Problemomrade_.FMP)
+  unexpected.values <- setdiff(actual.values, expected.values)
+  
+  if (length(unexpected.values) > 0) {
+    stop(paste("Unexpected values found in 'Problemomrade_.FMP':", 
+                  paste(unexpected.values, collapse = ", ")))
+  }
+  
+  str_replace_all(
+    str_to_lower(data$Problemomrade_.FMP),
+    c(
+      "ok" = NA_character_,
+      "nej" = NA_character_,
+      "inget problemområde" = NA_character_,
+      "föredömligt handlagd" = NA_character_,
+      "dokumetation" = "Documentation",
+      "handläggning" = "Patient management",
+      "logistik/teknik" = "Logistics/technical",
+      "lång tid till op" = "Delay to surgery",
+      "lång tid till dt" = "Delay to CT",
+      "kompetens brist" = "Competence",
+      "kommunikation" = "Communication",
+      "kommunikation+missad skada" = "Communication + missed injury",
+      "handläggning/logistik" = "Patient management/logistics",
+      "handläggning+dokumentation" = "Patient management + documentation",
+      "handläggning prehosp" = "Prehospital management",
+      "traumakriterier/styrning" = "Trauma criteria/guidelines",
+      "tertiär survey" = "Tertiary survey",
+      "bristande rutin" = "Inadequate routine",
+      "annat" = "Other",
+      "missad skada" = "Missed injury",
+      "resurs" = "Resources",
+      "triage på akm" = "Triage in the ED",
+      "triage på akutmottagningen" = "Triage in the ED",
+      "vårdnivå" = "Level of care",
+      "vårdnivå\\+\r\nmissade skador" = "Level of care + missed injury",
+      "handläggning\r\ndokumentation" = "Patient management + documentation"
+    )
+  )
+}
+
+#' Create broad OFI categories
+#'
+#' This function creates broad Opportunities for Improvement (OFI) categories
+#' based on the detailed categories created by create_detailed_ofi_categories().
+#'
+#' @param data A data frame containing the 'Problemomrade_.FMP' column
+#' @return A character vector of broad OFI categories
+#' @throws If input is not a data frame or if detailed categories are not a character vector
+create_broad_ofi_categories <- function(data) {
+  # Check if data is a data frame
+  if (!is.data.frame(data)) {
+    stop("Input must be a data frame")
+  }
+  
+  detailed_categories <- create_detailed_ofi_categories(data)
+  
+  # Check if detailed_categories is a character vector
+  if (!is.character(detailed_categories)) {
+    stop("Detailed categories must be a character vector")
+  }
+  
+  case_when(
+    detailed_categories %in% c("Missed injury", "Tertiary survey") ~ "Missed diagnosis",
+    detailed_categories %in% c("Delay to surgery", "Delay to CT") ~ "Delay in treatment",
+    detailed_categories %in% c("Triage in the ED", "Level of care", "Patient management", "Communication") ~ "Clinical judgement error",
+    detailed_categories %in% c("Documentation") ~ "Documentation Issues",
+    detailed_categories %in% c("Technical error") ~ "Technical error",
+    detailed_categories %in% c("Trauma criteria/guidelines", "Inadequate routine") ~ "Inadequate protocols",
+    detailed_categories %in% c("Competence", "Resources", "Logistics/technical") ~ "Inadequate resources",
+    detailed_categories %in% c("Other", "Patient management/logistics", "Prehospital management", "Level of care + missed injury") ~ "Other errors",
+    TRUE ~ "Other errors"
+  )
+}
+
+#' Add OFI categories to data
+#'
+#' This function adds both detailed and broad Opportunities for Improvement (OFI) 
+#' categories to the input data frame.
+#'
+#' @param data A data frame containing the 'Problemomrade_.FMP' column
+#' @return The input data frame with two new columns: 'ofi.categories.detailed' and 'ofi.categories.broad'
+add_ofi_categories <- function(data) {
+  data$ofi.categories.detailed <- create_detailed_ofi_categories(data)
+  data$ofi.categories.broad <- create_broad_ofi_categories(data)
+  return(data)
+}

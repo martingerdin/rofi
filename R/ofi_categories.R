@@ -111,6 +111,30 @@ create_broad_ofi_categories <- function(data) {
   )
 }
 
+#' Add detailed OFI categories to data
+#'
+#' This function adds detailed Opportunities for Improvement (OFI) categories to the input data frame.
+#'
+#' @param data A data frame containing the 'Problemomrade_.FMP' column
+#' @return The input data frame with a new column 'ofi.categories.detailed'
+#' @export
+add_detailed_ofi_categories <- function(data) {
+  data$ofi.categories.detailed <- create_detailed_ofi_categories(data)
+  return(data)
+}
+
+#' Add broad OFI categories to data
+#'
+#' This function adds broad Opportunities for Improvement (OFI) categories to the input data frame.
+#'
+#' @param data A data frame containing the 'Problemomrade_.FMP' column
+#' @return The input data frame with a new column 'ofi.categories.broad'
+#' @export
+add_broad_ofi_categories <- function(data) {
+  data$ofi.categories.broad <- create_broad_ofi_categories(data)
+  return(data)
+}
+
 #' Add OFI categories to data
 #'
 #' This function adds both detailed and broad Opportunities for Improvement (OFI)

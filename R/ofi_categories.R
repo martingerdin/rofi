@@ -5,6 +5,7 @@
 #'
 #' @param data A data frame containing the 'Problemomrade_.FMP' column
 #' @return A character vector of detailed OFI categories
+#' @export
 create_detailed_ofi_categories <- function(data) {
   # Check if data is a data frame
   if (!is.data.frame(data)) {
@@ -83,6 +84,7 @@ create_detailed_ofi_categories <- function(data) {
 #'
 #' @param data A data frame containing the 'Problemomrade_.FMP' column
 #' @return A character vector of broad OFI categories
+#' @export
 create_broad_ofi_categories <- function(data) {
   # Check if data is a data frame
   if (!is.data.frame(data)) {
@@ -116,6 +118,7 @@ create_broad_ofi_categories <- function(data) {
 #'
 #' @param data A data frame containing the 'Problemomrade_.FMP' column
 #' @return The input data frame with two new columns: 'ofi.categories.detailed' and 'ofi.categories.broad'
+#' @export
 add_ofi_categories <- function(data) {
   data$ofi.categories.detailed <- create_detailed_ofi_categories(data)
   data$ofi.categories.broad <- create_broad_ofi_categories(data)

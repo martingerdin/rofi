@@ -21,21 +21,23 @@ create_detailed_ofi_categories <- function(data) {
   if (!is.character(data$Problemomrade_.FMP)) {
     stop("Column 'Problemomrade_.FMP' must be of character type")
   }
+  
+  input <- data$Problemomrade_.FMP |> tolower()
+  
 
   # Define the expected unique values
   expected.values <- c(
-    NA, "ok", "nej", "inget problemområde", "föredömligt handlagd", "dokumetation",
-    "handläggning", "logistik/teknik", "lång tid till op", "lång tid till dt",
+    NA, "ok", "nej", "inget problemområde", "föredömligt handlagd", "dokumentation", 
+    "dokumetation", "handläggning", "logistik/teknik", "lång tid till op", "lång tid till dt",
     "kompetens brist", "kommunikation", "kommunikation+missad skada",
     "handläggning/logistik", "handläggning+dokumentation", "handläggning prehosp",
     "traumakriterier/styrning", "tertiär survey", "bristande rutin", "annat",
     "missad skada", "resurs", "triage på akm", "triage på akutmottagningen",
-    "vårdnivå", "vårdnivå+\r\nmissade skador", "handläggning\r\ndokumentation"
+    "vårdnivå", "vårdnivå+\r\nmissade skador", "handläggning\r\ndokumentation", "neurokirurg"
   )
 
   # Check if all actual values can be found in expected values
-  actual.values <- unique(data$Problemomrade_.FMP) |> tolower()
-  missing.values <- setdiff(actual.values, expected.values)
+  missing.values <- setdiff(unique(input), expected.values)
 
   if (length(missing.values) > 0) {
     stop(paste(
@@ -44,13 +46,14 @@ create_detailed_ofi_categories <- function(data) {
     ))
   }
 
-  stringr::str_replace_all(
-    data$Problemomrade_.FMP,
+  result <- stringr::str_replace_all(
+    input,
     c(
       "^ok$" = NA_character_,
       "^nej$" = NA_character_,
       "^inget problemområde$" = NA_character_,
       "^föredömligt handlagd$" = NA_character_,
+      "^dokumentation$" = "Documentation",
       "^dokumetation$" = "Documentation",
       "^handläggning$" = "Patient management",
       "^annat$" = "Other",
@@ -72,9 +75,21 @@ create_detailed_ofi_categories <- function(data) {
       "^logistik/teknik$" = "Logistics/technical",
       "^lång tid till dt$" = "Delay to CT",
       "^kompetens brist$" = "Competence",
-      "^kommunikation$" = "Communication"
+      "^kommunikation$" = "Communication",
+      "^neurokirurg$" = "Neurosurgeon"
     )
   )
+  
+  # Ensure no input values are left in the result
+  unreplaced_indices <- which(result == input)
+  if (length(unreplaced_indices) > 0) {
+    unreplaced_values <- unique(result[unreplaced_indices])
+    stop(paste(
+      paste(unreplaced_values, collapse = ", ")
+    ))
+  }
+  
+  return(result)
 }
 
 #' Create broad OFI categories
@@ -99,15 +114,16 @@ create_broad_ofi_categories <- function(data) {
   }
 
   dplyr::case_when(
-    detailed_categories %in% c("Missed injury", "Tertiary survey") ~ "Missed diagnosis",
+    is.na(detailed_categories) ~ NA_character_,
+    detailed_categories %in% c("Missed injury", "Tertiary survey", "Communication + missed injury") ~ "Missed diagnosis",
     detailed_categories %in% c("Delay to surgery", "Delay to CT") ~ "Delay in treatment",
-    detailed_categories %in% c("Triage in the ED", "Level of care", "Patient management", "Communication") ~ "Clinical judgement error",
+    detailed_categories %in% c("Triage in the ED", "Level of care", "Patient management", "Communication", "Patient management + documentation") ~ "Clinical judgement error",
     detailed_categories %in% c("Documentation") ~ "Documentation Issues",
     detailed_categories %in% c("Technical error") ~ "Technical error",
     detailed_categories %in% c("Trauma criteria/guidelines", "Inadequate routine") ~ "Inadequate protocols",
     detailed_categories %in% c("Competence", "Resources", "Logistics/technical") ~ "Inadequate resources",
-    detailed_categories %in% c("Other", "Patient management/logistics", "Prehospital management", "Level of care + missed injury") ~ "Other errors",
-    TRUE ~ "Other errors"
+    detailed_categories %in% c("Other", "Patient management/logistics", "Prehospital management", "Level of care + missed injury", "Neurosurgeon") ~ "Other errors",
+    TRUE ~ "Other (not classified)"
   )
 }
 

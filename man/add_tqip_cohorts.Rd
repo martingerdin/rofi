@@ -14,7 +14,7 @@ add_tqip_cohorts(dataset)
 \value{
 The original data frame with an added collumn "cohort" containing assigned cohorts
 
-The original data frame with an added collumn "cohort" containing assigned cohorts
+The original data frame with the added column "cohort" containing the added cohorts
 }
 \description{
 This functions adds the TQIP cohorts Blunt multisystem without TBI, Blunt multistystem with TBI,
@@ -26,5 +26,10 @@ Isolated severe TBI and Severe penetrating to a dataset.
 \section{Prerequisites}{
 
 Need to gave gone through the clean_all_predictors() and clean_audit_filters() function. In order to account for intubation status and GCS.
+}
+
+\section{How to use}{
+
+\code{new.dataset <- add_tqip_cohorts(combined.dataset) #apply function to combined.dataset and save in a new.dataset}
 }
 

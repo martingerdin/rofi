@@ -10,7 +10,9 @@
 #' `new.dataset <- add_tqip_cohorts(combined.dataset) #apply function to combined.dataset and save in a new.dataset`
 #'
 #' @param dataset A data frame containing AIS codes as columnes with names containing AIS as created by the rofi package. No default.
-#' @return The original data frame with an added collumn "cohort" containing assigned cohorts
+#'
+#' @return The original data frame with the added column "cohort" containing the added cohorts
+#'
 #' @export
 add_tqip_cohorts <- function(dataset) {
   # Check arguments

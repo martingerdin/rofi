@@ -89,6 +89,26 @@ create_detailed_ofi_categories <- function(data) {
     ))
   }
 
+  # Add details based on the Fr1.14 column and preventable deaths
+
+  if ("Fr1.14" %in% colnames(data)) {
+    if (!is.character(data$Fr1.14)) {
+      stop("Column 'Fr1.14' must be of character type")
+    }
+
+    # Append additional details based on Fr1.14 values
+    result <- mapply(function(ofi, fr1_14) {
+      if (!is.na(fr1_14) && fr1_14 == "2") {
+        return(ifelse(is.na(ofi), "Possibly preventable death", paste(ofi, "Possibly preventable death", sep = " + ")))
+      } else if (!is.na(fr1_14) && fr1_14 == "3") {
+        return(ifelse(is.na(ofi), "Preventable death", paste(ofi, "Preventable death", sep = " + ")))
+      } else {
+        return(ofi) # Leave it unchanged for other cases, including NA
+      }
+    }, result, data$Fr1.14, USE.NAMES = FALSE)
+  }
+
+
   return(result)
 }
 
@@ -122,6 +142,7 @@ create_broad_ofi_categories <- function(data) {
     detailed_categories %in% c("Technical error") ~ "Technical error",
     detailed_categories %in% c("Trauma criteria/guidelines", "Inadequate routine") ~ "Inadequate protocols",
     detailed_categories %in% c("Competence", "Resources", "Logistics/technical") ~ "Inadequate resources",
+    detailed_categories %in% c("Possibly preventable death", "Preventable death") ~ "Possibly preventable deaths",
     detailed_categories %in% c("Other", "Patient management/logistics", "Prehospital management", "Level of care + missed injury", "Neurosurgeon") ~ "Other errors",
     TRUE ~ "Other (not classified)"
   )

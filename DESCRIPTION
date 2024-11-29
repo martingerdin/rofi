@@ -4,6 +4,8 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Martin", "Gerdin Wärnberg", , "martingerdin@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-6069-4794"))
+    person("Jonatan", "Attergrim", , "jonatan.attergrim@ki.se", role = c("aut"),
+           comment = c(ORCID = "0000-0002-9546-5788"))
 Description: This package contains utility functions for working with the opportunities for improvement project.
 License: `use_gpl3_license()`
 Encoding: UTF-8

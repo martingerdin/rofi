@@ -21,13 +21,13 @@ create_detailed_ofi_categories <- function(data) {
   if (!is.character(data$Problemomrade_.FMP)) {
     stop("Column 'Problemomrade_.FMP' must be of character type")
   }
-  
+
   input <- data$Problemomrade_.FMP |> tolower()
-  
+
 
   # Define the expected unique values
   expected.values <- c(
-    NA, "ok", "nej", "inget problemområde", "föredömligt handlagd", "dokumentation", 
+    NA, "ok", "nej", "inget problemområde", "föredömligt handlagd", "dokumentation",
     "dokumetation", "handläggning", "logistik/teknik", "lång tid till op", "lång tid till dt",
     "kompetens brist", "kommunikation", "kommunikation+missad skada",
     "handläggning/logistik", "handläggning+dokumentation", "handläggning prehosp",
@@ -79,7 +79,7 @@ create_detailed_ofi_categories <- function(data) {
       "^neurokirurg$" = "Neurosurgeon"
     )
   )
-  
+
   # Ensure no input values are left in the result
   unreplaced_indices <- which(result == input)
   if (length(unreplaced_indices) > 0) {
@@ -88,7 +88,7 @@ create_detailed_ofi_categories <- function(data) {
       paste(unreplaced_values, collapse = ", ")
     ))
   }
-  
+
   return(result)
 }
 

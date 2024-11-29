@@ -23,7 +23,7 @@ Imports:
     labelled,
     stringr
 Depends: 
-    R (>= 2.10)
+    R (>= 3.0)
 Suggests: 
     knitr,
     testthat (>= 3.0.0)
@@ -31,3 +31,4 @@ Remotes:
     martingerdin/noacsr
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+LazyData: true
